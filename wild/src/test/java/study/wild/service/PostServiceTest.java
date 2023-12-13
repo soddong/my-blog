@@ -1,5 +1,6 @@
 package study.wild.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import study.wild.dto.PostDto;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -23,23 +25,23 @@ public class PostServiceTest {
     @Test
     public void 게시글_등록_테스트() {
         // given
-        PostDto postDto = createPostDto("게시물A", "내용A");
+        PostDto postDto = createPostDto("제목A", "내용A");
 
         // when
         PostDto savedPostDto = postService.savePost(postDto);
 
         // then
         assertThat(savedPostDto).isNotNull();
-        assertThat(savedPostDto.title()).isEqualTo("게시물A");
+        assertThat(savedPostDto.title()).isEqualTo("제목A");
         assertThat(savedPostDto.content()).isEqualTo("내용A");
     }
 
     @Test
     public void 전체_게시글_조회_테스트() {
         // given
-        createAndSavePostDto("게시글A", "내용A");
-        createAndSavePostDto("게시글B", "내용B");
-        createAndSavePostDto("게시글C", "내용C");
+        createAndSavePostDto("제목A", "내용A");
+        createAndSavePostDto("제목B", "내용B");
+        createAndSavePostDto("제목C", "내용C");
 
         // when
         List<PostDto> postDtos = postService.findPosts();
@@ -47,19 +49,19 @@ public class PostServiceTest {
         // then
         assertThat(postDtos).hasSize(3)
                 .extracting(PostDto::title)
-                .containsExactly("게시글A", "게시글B", "게시글C");
+                .containsExactly("제목A", "제목B", "제목C");
     }
 
     @Test
     public void 특정_게시글_조회_테스트() {
         // given
-        PostDto postDto = createPostDto("게시물A", "내용A");
+        PostDto postDto = createPostDto("제목A", "내용A");
 
         // when
         PostDto findedPostDto = postService.findPost(postService.savePost(postDto).id());
 
         // then
-        assertThat(findedPostDto.title()).isEqualTo("게시물A");
+        assertThat(findedPostDto.title()).isEqualTo("제목A");
         assertThat(findedPostDto.content()).isEqualTo("내용A");
     }
 
@@ -77,6 +79,20 @@ public class PostServiceTest {
         // then
         assertThat(updatedPost.title()).isEqualTo("수정된 제목");
         assertThat(updatedPost.content()).isEqualTo("수정된 내용");
+    }
+
+    @Test
+    public void 게시글_삭제_테스트() {
+        // given
+        PostDto postDto = new PostDto(null, "제목A", "내용A");
+        PostDto savedPost = postService.savePost(postDto);
+
+        // when
+        postService.deletePost(savedPost.id());
+
+        // then
+        assertThat(postService.findPosts()).hasSize(0);
+        assertThrows(EntityNotFoundException.class, () -> postService.findPost(savedPost.id()));
     }
 
     private void createAndSavePostDto(String title, String content) {

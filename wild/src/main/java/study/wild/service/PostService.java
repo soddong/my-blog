@@ -1,5 +1,6 @@
 package study.wild.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,23 +24,29 @@ public class PostService {
     @Transactional
     public PostDto savePost(PostDto postDto) {
         Post post = postRepository.save(postDto.toEntity());
-        return PostDto.from(post); // 변환된 PostDto 반환
+        return PostDto.from(post);
     }
 
+    /**
+     * 게시글 수정
+     */
     @Transactional
     public PostDto updatePost(Long postId, PostDto postDto) {
-        Post post = postRepository.findById(postId);
-        post.setTitle(postDto.title());
-        post.setContent(postDto.content());
-        return PostDto.from(post);
+        return postRepository.findById(postId)
+                .map(post -> {
+                    post.setTitle(postDto.title());
+                    post.setContent(postDto.content());
+                    return PostDto.from(postRepository.save(post));
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + postId));
     }
 
     /**
      * 전체 게시글 조회
      */
     public List<PostDto> findPosts() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream()
+        return postRepository.findAll()
+                .stream()
                 .map(PostDto::from)
                 .collect(Collectors.toList());
     }
@@ -48,7 +55,16 @@ public class PostService {
      * 특정 게시글 조회
      */
     public PostDto findPost(Long postId) {
-        return PostDto.from(postRepository.findById(postId));
+        return postRepository.findById(postId)
+                .map(PostDto::from)
+                .orElseThrow(() -> new EntityNotFoundException("해당 게시글을 찾을 수 없습니다"));
     }
 
+    /**
+     * 게시글 삭제
+     */
+    @Transactional
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
+    }
 }
