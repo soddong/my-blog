@@ -26,6 +26,14 @@ public class PostService {
         return PostDto.from(post); // 변환된 PostDto 반환
     }
 
+    @Transactional
+    public PostDto updatePost(Long postId, PostDto postDto) {
+        Post post = postRepository.findById(postId);
+        post.setTitle(postDto.title());
+        post.setContent(postDto.content());
+        return PostDto.from(post);
+    }
+
     /**
      * 전체 게시글 조회
      */
@@ -40,7 +48,7 @@ public class PostService {
      * 특정 게시글 조회
      */
     public PostDto findPost(Long postId) {
-        return PostDto.from(postRepository.findOne(postId));
+        return PostDto.from(postRepository.findById(postId));
     }
 
 }

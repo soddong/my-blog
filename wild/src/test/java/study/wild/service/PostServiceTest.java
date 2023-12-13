@@ -63,6 +63,22 @@ public class PostServiceTest {
         assertThat(findedPostDto.content()).isEqualTo("내용A");
     }
 
+    @Test
+    public void 게시글_수정_테스트() {
+        // given
+        PostDto originalPost = createPostDto("원래 제목", "원래 내용");
+        PostDto savedPost = postService.savePost(originalPost);
+
+        PostDto updatedPostDto = createPostDto("수정된 제목", "수정된 내용");
+
+        // when
+        PostDto updatedPost = postService.updatePost(savedPost.id(), updatedPostDto);
+
+        // then
+        assertThat(updatedPost.title()).isEqualTo("수정된 제목");
+        assertThat(updatedPost.content()).isEqualTo("수정된 내용");
+    }
+
     private void createAndSavePostDto(String title, String content) {
         PostDto postDto = createPostDto(title, content);
         postService.savePost(postDto);

@@ -22,6 +22,12 @@ public class PostController {
         return postService.savePost(postDto);
     }
 
+    @PutMapping("/{postId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PostDto updatePost(@PathVariable Long postId, @RequestBody PostDto postDto) {
+        return postService.updatePost(postId, postDto);
+    }
+
     @GetMapping
     public List<PostDto> getPosts() {
         return postService.findPosts();
