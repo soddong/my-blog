@@ -30,7 +30,7 @@ public class PostController {
 
     @GetMapping
     public List<PostDto> getPosts() {
-        return postService.findPosts();
+        return postService.findPosts(false);
     }
 
     @GetMapping("/{postId}")

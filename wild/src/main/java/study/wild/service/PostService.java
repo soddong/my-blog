@@ -1,7 +1,11 @@
 package study.wild.service;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Filter;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.wild.domain.Post;
@@ -17,6 +21,9 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
+
+    @Autowired
+    private EntityManager em;
 
     /**
      * 게시글 등록
@@ -42,13 +49,19 @@ public class PostService {
     }
 
     /**
-     * 전체 게시글 조회
+     * 전체 게시글 조회 (삭제 여부 조건에 필터링한 게시글)
+     * @param isDeleted 게시글 삭제 여부
      */
-    public List<PostDto> findPosts() {
-        return postRepository.findAll()
+    public List<PostDto> findPosts(boolean isDeleted) {
+        Session session = em.unwrap(Session.class);
+        Filter filter = session.enableFilter("deletedPostFilter");
+        filter.setParameter("isDeleted", isDeleted);
+        List<PostDto> findPosts = postRepository.findAll()
                 .stream()
                 .map(PostDto::from)
                 .collect(Collectors.toList());
+        session.disableFilter("deletedPostFilter");
+        return findPosts;
     }
 
     /**
@@ -61,7 +74,7 @@ public class PostService {
     }
 
     /**
-     * 게시글 삭제
+     * 게시글 삭제 (soft delete)
      */
     @Transactional
     public void deletePost(Long postId) {

@@ -18,6 +18,10 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE post SET deleted = true WHERE post_id = ?")
+@FilterDef(name = "deletedPostFilter", parameters = @ParamDef(name = "isDeleted", type = boolean.class))
+@Filter(name = "deletedPostFilter", condition = "deleted = :isDeleted")
 public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue

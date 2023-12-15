@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import study.wild.domain.Post;
 import study.wild.dto.PostDto;
+import study.wild.repository.PostRepository;
 
 import java.util.List;
 
@@ -21,6 +23,9 @@ public class PostServiceTest {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Test
     public void 게시글_등록_테스트() {
@@ -44,7 +49,7 @@ public class PostServiceTest {
         createAndSavePostDto("제목C", "내용C");
 
         // when
-        List<PostDto> postDtos = postService.findPosts();
+        List<PostDto> postDtos = postService.findPosts(false);
 
         // then
         assertThat(postDtos).hasSize(3)
@@ -82,7 +87,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void 게시글_삭제_테스트() {
+    public void 게시물_soft_삭제_테스트() {
         // given
         PostDto postDto = new PostDto(null, "제목A", "내용A");
         PostDto savedPost = postService.savePost(postDto);
@@ -91,8 +96,8 @@ public class PostServiceTest {
         postService.deletePost(savedPost.id());
 
         // then
-        assertThat(postService.findPosts()).hasSize(0);
-        assertThrows(EntityNotFoundException.class, () -> postService.findPost(savedPost.id()));
+        assertThat(postService.findPosts(false)).hasSize(0);
+        assertThat(postService.findPosts(true)).hasSize(1);
     }
 
     private void createAndSavePostDto(String title, String content) {
