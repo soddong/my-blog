@@ -1,9 +1,15 @@
 package study.wild.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,7 +37,8 @@ public class Post extends BaseTimeEntity {
     @Column(columnDefinition = "integer default 0")
     private Long view;
 
-    private LocalDateTime deleteDate;
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
