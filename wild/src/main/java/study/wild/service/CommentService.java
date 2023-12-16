@@ -52,4 +52,12 @@ public class CommentService {
                 .map(CommentDto::from)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 댓글 삭제
+     */
+    @Transactional
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
+    }
 }

@@ -55,7 +55,10 @@ class CommentServiceTest {
     @Test
     public void 댓글_수정_테스트() {
         // given
-        Long commentId = saveAndGetCommentId("댓글 내용");
+        Long commentId = saveAndGetCommentId(
+                createPostDtoAndGetId("제목", "내용"),
+                "댓글 내용"
+        );
         CommentDto commentDto = createCommentDto("댓글 내용 수정");
 
         // when
@@ -79,6 +82,20 @@ class CommentServiceTest {
                 .containsExactly("댓글1", "댓글2");
     }
 
+    @Test
+    public void 댓글_삭제_테스트() {
+        // given
+        Long postId = createPostDtoAndGetId("제목", "내용");
+        Long commentId = saveAndGetCommentId(postId, "댓글");
+
+        // when
+        commentService.deleteComment(commentId);
+
+        // then
+        assertThat(commentService.getCommentsByPost(postId))
+                .hasSize(0);
+    }
+
     private Long createPostDtoAndGetId(String title, String content) {
         PostDto postDto = new PostDto(null, title, content);
         return postService.savePost(postDto).id();
@@ -88,8 +105,10 @@ class CommentServiceTest {
         return new CommentDto(null, content);
     }
 
-    private Long saveAndGetCommentId(String content) {
-        CommentDto commentDto = commentService.saveComment(createPostDtoAndGetId("제목", "내용"), createCommentDto(content));
+    private Long saveAndGetCommentId(Long postId, String content) {
+        CommentDto commentDto = commentService.saveComment(
+                postId,
+                createCommentDto(content));
         return commentDto.id();
     }
 }
