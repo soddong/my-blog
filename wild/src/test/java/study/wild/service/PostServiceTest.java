@@ -7,16 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import study.wild.domain.Post;
 import study.wild.dto.PostDto;
-import study.wild.repository.PostRepository;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -83,6 +80,20 @@ public class PostServiceTest {
         // then
         assertThat(updatedPost.title()).isEqualTo("수정된 제목");
         assertThat(updatedPost.content()).isEqualTo("수정된 내용");
+    }
+
+    @Test
+    public void 삭제된_게시글_수정시_예외발생() {
+        // given
+        PostDto originalPost = createPostDto("원래 제목", "원래 내용");
+        PostDto savedPost = postService.savePost(originalPost);
+        postService.deletePost(savedPost.id());
+
+        // when & then
+        PostDto updatedPostDto = createPostDto("수정된 제목", "수정된 내용");
+        assertThatThrownBy(() -> postService.updatePost(savedPost.id(), updatedPostDto))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining("Post not found");
     }
 
     @Test

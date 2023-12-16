@@ -35,7 +35,7 @@ public class PostService {
      */
     @Transactional
     public PostDto updatePost(Long postId, PostDto postDto) {
-        return postRepository.findById(postId)
+        return postRepository.findPostByIdAndIsDeleted(postId, false)
                 .map(post -> {
                     post.setTitle(postDto.title());
                     post.setContent(postDto.content());
