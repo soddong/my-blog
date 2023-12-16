@@ -45,7 +45,7 @@ public class PostService {
                     post.setContent(postDto.content());
                     return PostDto.from(postRepository.save(post));
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + postId));
+                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
     }
 
     /**
@@ -53,24 +53,23 @@ public class PostService {
      * @param isDeleted 게시글 삭제 여부
      */
     public List<PostDto> findPosts(boolean isDeleted) {
-        Session session = em.unwrap(Session.class);
-        Filter filter = session.enableFilter("deletedPostFilter");
-        filter.setParameter("isDeleted", isDeleted);
-        List<PostDto> findPosts = postRepository.findAll()
+        List<PostDto> findPosts = postRepository.findAllByAndDeleted(isDeleted)
                 .stream()
                 .map(PostDto::from)
                 .collect(Collectors.toList());
-        session.disableFilter("deletedPostFilter");
         return findPosts;
     }
 
+
     /**
-     * 특정 게시글 조회
+     * 특정 게시글 조회 (삭제 여부 조건에 필터링한 게시글)
+     * @param isDeleted 게시글 삭제 여부
      */
-    public PostDto findPost(Long postId) {
-        return postRepository.findById(postId)
+    public PostDto findPost(Long postId, boolean isDeleted) {
+        PostDto findPost = postRepository.findPostByIdAndIsDeleted(postId, isDeleted)
                 .map(PostDto::from)
-                .orElseThrow(() -> new EntityNotFoundException("해당 게시글을 찾을 수 없습니다"));
+                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+        return findPost;
     }
 
     /**

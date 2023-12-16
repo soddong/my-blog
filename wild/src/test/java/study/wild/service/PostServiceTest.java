@@ -14,6 +14,8 @@ import study.wild.repository.PostRepository;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
@@ -23,9 +25,6 @@ public class PostServiceTest {
 
     @Autowired
     private PostService postService;
-
-    @Autowired
-    private PostRepository postRepository;
 
     @Test
     public void 게시글_등록_테스트() {
@@ -63,7 +62,7 @@ public class PostServiceTest {
         PostDto postDto = createPostDto("제목A", "내용A");
 
         // when
-        PostDto findedPostDto = postService.findPost(postService.savePost(postDto).id());
+        PostDto findedPostDto = postService.findPost(postService.savePost(postDto).id(), false);
 
         // then
         assertThat(findedPostDto.title()).isEqualTo("제목A");
@@ -89,7 +88,7 @@ public class PostServiceTest {
     @Test
     public void 게시물_soft_삭제_테스트() {
         // given
-        PostDto postDto = new PostDto(null, "제목A", "내용A");
+        PostDto postDto = new PostDto(null, "제목Q", "내용Q");
         PostDto savedPost = postService.savePost(postDto);
 
         // when
@@ -98,6 +97,10 @@ public class PostServiceTest {
         // then
         assertThat(postService.findPosts(false)).hasSize(0);
         assertThat(postService.findPosts(true)).hasSize(1);
+        assertDoesNotThrow(() -> postService.findPost(savedPost.id(), true));
+        assertThatThrownBy(() -> postService.findPost(savedPost.id(), false))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining("Post not found");
     }
 
     private void createAndSavePostDto(String title, String content) {

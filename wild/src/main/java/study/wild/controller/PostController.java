@@ -35,7 +35,7 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public PostDto getPost(@PathVariable Long postId) {
-        return postService.findPost(postId);
+        return postService.findPost(postId, false);
     }
 
     @DeleteMapping("/{postId}")
