@@ -31,8 +31,8 @@ class CommentServiceTest {
     @Test
     public void 댓글_등록_테스트() {
         // given
-        CommentDto commentDto = createCommentDto("댓글 내용");
         Long postId = createPostDtoAndGetId("제목", "내용");
+        CommentDto commentDto = createCommentDto("댓글 내용");
 
         // when
         CommentDto saveComment = commentService.saveComment(postId, commentDto);
@@ -63,6 +63,20 @@ class CommentServiceTest {
 
         // then
         assertThat(updateCommentDto.content()).isEqualTo(commentDto.content());
+    }
+
+    @Test
+    public void 특정_게시글의_댓글_조회_테스트() {
+        // given
+        Long postId = createPostDtoAndGetId("제목", "내용");
+        commentService.saveComment(postId, createCommentDto("댓글1"));
+        commentService.saveComment(postId, createCommentDto("댓글2"));
+
+        // when & then
+        assertThat(commentService.getCommentsByPost(postId))
+                .hasSize(2)
+                .extracting(CommentDto::content)
+                .containsExactly("댓글1", "댓글2");
     }
 
     private Long createPostDtoAndGetId(String title, String content) {

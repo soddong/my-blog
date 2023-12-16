@@ -35,4 +35,9 @@ public class CommentController {
     public CommentDto updateComment(@PathVariable Long commentId, @RequestBody CommentDto commentDto) {
         return commentService.updateComment(commentId, commentDto);
     }
+
+    @GetMapping
+    public List<CommentDto> getCommentsByPost(@PathVariable Long postId) {
+        return commentService.getCommentsByPost(postId);
+    }
 }

@@ -42,4 +42,14 @@ public class CommentService {
         comment.setContent(commentDto.content());
         return CommentDto.from(commentRepository.save(comment));
     }
+
+    /**
+     * 특정 게시글의 댓글들 조회
+     */
+    public List<CommentDto> getCommentsByPost(Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        return comments.stream()
+                .map(CommentDto::from)
+                .collect(Collectors.toList());
+    }
 }
