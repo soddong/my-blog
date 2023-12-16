@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import study.wild.dto.PostDto;
+import study.wild.repository.PostRepository;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class PostServiceTest {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Test
     public void 게시글_등록_테스트() {
@@ -114,9 +118,24 @@ public class PostServiceTest {
                 .hasMessageContaining("Post not found");
     }
 
-    private void createAndSavePostDto(String title, String content) {
+    @Test
+    public void 게시글_조회시_조회수_증가_테스트() {
+        // given
+        Long postId = createAndSavePostDto("게시글", "내용");
+
+        // when & then
+        for (int i = 1; i < 5; i++) {
+            postService.findPost(postId, false);
+            assertThat(postRepository.findPostByIdAndIsDeleted(postId, false)
+                    .get().getView())
+                    .isEqualTo(i);
+
+        }
+    }
+
+    private Long createAndSavePostDto(String title, String content) {
         PostDto postDto = createPostDto(title, content);
-        postService.savePost(postDto);
+        return postService.savePost(postDto).id();
     }
 
     private PostDto createPostDto(String title, String content) {

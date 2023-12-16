@@ -50,13 +50,11 @@ public class PostService {
      * @param isDeleted 게시글 삭제 여부
      */
     public List<PostDto> findPosts(boolean isDeleted) {
-        List<PostDto> findPosts = postRepository.findAllByAndDeleted(isDeleted)
+        return postRepository.findAllByAndDeleted(isDeleted)
                 .stream()
                 .map(PostDto::from)
                 .collect(Collectors.toList());
-        return findPosts;
     }
-
 
     /**
      * 특정 게시글 조회 (삭제 여부 조건에 필터링한 게시글)
@@ -64,10 +62,10 @@ public class PostService {
      * @param isDeleted 게시글 삭제 여부
      */
     public PostDto findPost(Long postId, boolean isDeleted) {
-        PostDto findPost = postRepository.findPostByIdAndIsDeleted(postId, isDeleted)
-                .map(PostDto::from)
+        Post post = postRepository.findPostByIdAndIsDeleted(postId, isDeleted)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
-        return findPost;
+        viewCountUp(post);
+        return PostDto.from(post);
     }
 
     /**
@@ -77,5 +75,13 @@ public class PostService {
     public void deletePost(Long postId) {
         postRepository.deleteById(postId);
         commentRepository.deleteByPostId(postId);
+    }
+
+    /**
+     * 조회수 증가
+     */
+    @Transactional
+    public void viewCountUp(Post post) {
+        post.increaseView();
     }
 }
