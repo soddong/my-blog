@@ -25,7 +25,7 @@ public class PostService {
      * 게시글 등록
      */
     @Transactional
-    public PostDto savePost(PostDto postDto) {
+    public PostDto createPost(PostDto postDto) {
         Post post = postRepository.save(postDto.toEntity());
         return PostDto.from(post);
     }
@@ -34,7 +34,7 @@ public class PostService {
      * 게시글 수정
      */
     @Transactional
-    public PostDto updatePost(Long postId, PostDto postDto) {
+    public PostDto editPost(Long postId, PostDto postDto) {
         return postRepository.findPostByIdAndIsDeleted(postId, false)
                 .map(post -> {
                     post.setTitle(postDto.title());
@@ -49,7 +49,7 @@ public class PostService {
      *
      * @param isDeleted 게시글 삭제 여부
      */
-    public List<PostDto> findPosts(boolean isDeleted) {
+    public List<PostDto> viewPosts(boolean isDeleted) {
         return postRepository.findAllByAndDeleted(isDeleted)
                 .stream()
                 .map(PostDto::from)
@@ -61,10 +61,10 @@ public class PostService {
      *
      * @param isDeleted 게시글 삭제 여부
      */
-    public PostDto findPost(Long postId, boolean isDeleted) {
+    public PostDto viewPostDetail(Long postId, boolean isDeleted) {
         Post post = postRepository.findPostByIdAndIsDeleted(postId, isDeleted)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
-        viewCountUp(post);
+        countUpView(post);
         return PostDto.from(post);
     }
 
@@ -81,7 +81,7 @@ public class PostService {
      * 조회수 증가
      */
     @Transactional
-    public void viewCountUp(Post post) {
+    public void countUpView(Post post) {
         post.increaseView();
     }
 }

@@ -110,7 +110,7 @@ class CommentServiceTest {
 
     private Long createPostDtoAndGetId(String title, String content) {
         PostDto postDto = new PostDto(null, title, content);
-        return postService.savePost(postDto).id();
+        return postService.createPost(postDto).id();
     }
 
     private CommentDto createCommentDto(String content) {
