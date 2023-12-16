@@ -52,12 +52,30 @@ class CommentServiceTest {
                 .hasMessageContaining("Post not found");
     }
 
+    @Test
+    public void 댓글_수정_테스트() {
+        // given
+        Long commentId = saveAndGetCommentId("댓글 내용");
+        CommentDto commentDto = createCommentDto("댓글 내용 수정");
+
+        // when
+        CommentDto updateCommentDto = commentService.updateComment(commentId, commentDto);
+
+        // then
+        assertThat(updateCommentDto.content()).isEqualTo(commentDto.content());
+    }
+
     private Long createPostDtoAndGetId(String title, String content) {
         PostDto postDto = new PostDto(null, title, content);
         return postService.savePost(postDto).id();
     }
 
     private CommentDto createCommentDto(String content) {
-        return new CommentDto(content);
+        return new CommentDto(null, content);
+    }
+
+    private Long saveAndGetCommentId(String content) {
+        CommentDto commentDto = commentService.saveComment(createPostDtoAndGetId("제목", "내용"), createCommentDto(content));
+        return commentDto.id();
     }
 }

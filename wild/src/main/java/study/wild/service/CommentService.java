@@ -31,4 +31,15 @@ public class CommentService {
         comment.setContent(contentDto.content());
         return CommentDto.from(commentRepository.save(comment));
     }
+
+    /**
+     * 댓글 수정
+     */
+    @Transactional
+    public CommentDto updateComment(Long commentId, CommentDto commentDto) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+        comment.setContent(commentDto.content());
+        return CommentDto.from(commentRepository.save(comment));
+    }
 }

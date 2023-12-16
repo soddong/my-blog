@@ -30,4 +30,9 @@ public class CommentController {
     public CommentDto save(@PathVariable Long postId, @RequestBody CommentDto commentDto) {
         return commentService.saveComment(postId, commentDto);
     }
+
+    @PutMapping("/{commentId}")
+    public CommentDto updateComment(@PathVariable Long commentId, @RequestBody CommentDto commentDto) {
+        return commentService.updateComment(commentId, commentDto);
+    }
 }
