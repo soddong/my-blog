@@ -44,6 +44,16 @@ public class CommentService {
     }
 
     /**
+     * 전체 댓글 조회
+     */
+    public List<CommentDto> getCommentAll() {
+        return commentRepository.findAll()
+                .stream()
+                .map(CommentDto::from)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 특정 게시글의 댓글들 조회
      */
     public List<CommentDto> getCommentsByPost(Long postId) {

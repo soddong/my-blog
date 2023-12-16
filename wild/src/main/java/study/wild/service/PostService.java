@@ -1,13 +1,12 @@
 package study.wild.service;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.wild.domain.Post;
 import study.wild.dto.PostDto;
+import study.wild.repository.CommentRepository;
 import study.wild.repository.PostRepository;
 
 import java.util.List;
@@ -20,8 +19,7 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    @Autowired
-    private EntityManager em;
+    private final CommentRepository commentRepository;
 
     /**
      * 게시글 등록
@@ -48,6 +46,7 @@ public class PostService {
 
     /**
      * 전체 게시글 조회 (삭제 여부 조건에 필터링한 게시글)
+     *
      * @param isDeleted 게시글 삭제 여부
      */
     public List<PostDto> findPosts(boolean isDeleted) {
@@ -61,6 +60,7 @@ public class PostService {
 
     /**
      * 특정 게시글 조회 (삭제 여부 조건에 필터링한 게시글)
+     *
      * @param isDeleted 게시글 삭제 여부
      */
     public PostDto findPost(Long postId, boolean isDeleted) {
@@ -76,5 +76,6 @@ public class PostService {
     @Transactional
     public void deletePost(Long postId) {
         postRepository.deleteById(postId);
+        commentRepository.deleteByPostId(postId);
     }
 }

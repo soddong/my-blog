@@ -92,6 +92,22 @@ class CommentServiceTest {
                 .hasSize(0);
     }
 
+    @Test
+    void 게시글_삭제시_연관댓글_삭제() {
+        // given
+        Long postId = createPostDtoAndGetId("제목", "내용");
+        for (int i = 0; i < 4; i++) {
+            saveAndGetCommentId(postId, "댓글" + i);
+        }
+
+        // when
+        postService.deletePost(postId);
+
+        // then
+        assertThat(commentService.getCommentAll())
+                .hasSize(0);
+    }
+
     private Long createPostDtoAndGetId(String title, String content) {
         PostDto postDto = new PostDto(null, title, content);
         return postService.savePost(postDto).id();
