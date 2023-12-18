@@ -16,4 +16,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.deleted = :isDeleted")
     List<Post> findAllByAndDeleted(@Param("isDeleted") boolean isDeleted);
+
+    @Query("SELECT p FROM Post p WHERE p.category.id = :categoryId AND p.deleted = :isDeleted")
+    List<Post> findPostByCategoryIdAndDeleted(@Param("categoryId") Long categoryId, boolean isDeleted);
 }

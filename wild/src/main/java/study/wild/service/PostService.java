@@ -77,6 +77,16 @@ public class PostService {
     }
 
     /**
+     * 특정 카테고리 내 게시물 조회
+     */
+    public List<PostDto> viewPostsByCategory(Long categoryId, boolean isDeleted) {
+        return postRepository.findPostByCategoryIdAndDeleted(categoryId, isDeleted)
+                .stream()
+                .map(PostDto::from)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 게시글 삭제 (soft delete)
      */
     @Transactional
