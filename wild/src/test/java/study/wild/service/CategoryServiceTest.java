@@ -64,6 +64,18 @@ class CategoryServiceTest {
                 .containsExactly("공부", "기록", "여행");
     }
 
+    @Test
+    public void 카테고리_삭제_테스트() {
+        // given
+        CategoryDto savedCategory = categoryService.createCategory(createCategoryDto("공부"));
+
+        // when
+        categoryService.deleteCategory(savedCategory.id());
+
+        // then
+        assertThat(categoryService.findAllCategories()).hasSize(0);
+    }
+
     private CategoryDto createCategoryDto(String name) {
         return new CategoryDto(null, name);
     }

@@ -38,4 +38,9 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void deleteCategory(Long categoryId) {
+        categoryRepository.deleteById(categoryId);
+    }
+
 }
