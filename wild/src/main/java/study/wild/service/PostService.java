@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.wild.domain.Post;
+import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
+import study.wild.repository.CategoryRepository;
 import study.wild.repository.CommentRepository;
 import study.wild.repository.PostRepository;
 
@@ -21,13 +23,19 @@ public class PostService {
 
     private final CommentRepository commentRepository;
 
+    private final CategoryService categoryService;
+
+    private final CategoryRepository categoryRepository;
+
     /**
      * 게시글 등록
      */
     @Transactional
     public PostDto createPost(PostDto postDto) {
-        Post post = postRepository.save(postDto.toEntity());
-        return PostDto.from(post);
+        CategoryDto categoryDto = categoryService.findByPost(postDto);
+
+        Post savedPost = postRepository.save(postDto.toEntity(categoryDto.toEntity()));
+        return PostDto.from(savedPost);
     }
 
     /**

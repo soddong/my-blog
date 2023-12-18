@@ -59,9 +59,9 @@ class CategoryServiceTest {
         List<CategoryDto> categories = categoryService.findAllCategories();
 
         // then
-        assertThat(categories).hasSize(3)
+        assertThat(categories).hasSize(4) // default 포함
                 .extracting(CategoryDto::name)
-                .containsExactly("공부", "기록", "여행");
+                .containsExactly("", "공부", "기록", "여행");
     }
 
     @Test
@@ -73,7 +73,7 @@ class CategoryServiceTest {
         categoryService.deleteCategory(savedCategory.id());
 
         // then
-        assertThat(categoryService.findAllCategories()).hasSize(0);
+        assertThat(categoryService.findAllCategories()).hasSize(1); // default 카테고리
     }
 
     private CategoryDto createCategoryDto(String name) {
