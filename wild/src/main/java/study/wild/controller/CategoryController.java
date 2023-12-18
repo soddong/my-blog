@@ -3,6 +3,7 @@ package study.wild.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import study.wild.dto.CategoryDto;
 import study.wild.service.CategoryService;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -31,4 +34,10 @@ public class CategoryController {
     public CategoryDto updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDto categoryDto) {
         return categoryService.updateCategory(categoryId, categoryDto);
     }
+
+    @GetMapping
+    public List<CategoryDto> getPosts() {
+        return categoryService.findAllCategories();
+    }
+
 }

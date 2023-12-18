@@ -8,6 +8,9 @@ import study.wild.domain.Category;
 import study.wild.dto.CategoryDto;
 import study.wild.repository.CategoryRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -28,4 +31,11 @@ public class CategoryService {
         category.setName(categoryDto.name());
         return CategoryDto.from(categoryRepository.save(category));
     }
+
+    public List<CategoryDto> findAllCategories() {
+        return categoryRepository.findAll().stream()
+                .map(CategoryDto::from)
+                .collect(Collectors.toList());
+    }
+
 }
