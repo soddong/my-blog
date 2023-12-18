@@ -3,7 +3,9 @@ package study.wild.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,5 +26,9 @@ public class CategoryController {
     public CategoryDto save(@RequestBody CategoryDto categoryDto) {
         return categoryService.createCategory(categoryDto);
     }
-    
+
+    @PutMapping("/{categoryId}")
+    public CategoryDto updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDto categoryDto) {
+        return categoryService.updateCategory(categoryId, categoryDto);
+    }
 }

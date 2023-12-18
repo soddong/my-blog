@@ -31,6 +31,21 @@ class CategoryServiceTest {
 
     }
 
+    @Test
+    public void 게시글_수정_테스트() {
+        // given
+        CategoryDto savedCategory = categoryService.createCategory(createCategoryDto("기록"));
+
+        // when
+        CategoryDto updatedCategory = categoryService.updateCategory(
+                savedCategory.id(),
+                createCategoryDto("공부")
+        );
+
+        // then
+        assertThat(updatedCategory.name()).isEqualTo("공부");
+    }
+
     private CategoryDto createCategoryDto(String name) {
         return new CategoryDto(null, name);
     }

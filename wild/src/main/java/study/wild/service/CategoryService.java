@@ -1,5 +1,6 @@
 package study.wild.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,5 +20,12 @@ public class CategoryService {
         Category category = categoryRepository.save(categoryDto.toEntity());
         return CategoryDto.from(category);
     }
-    
+
+    @Transactional
+    public CategoryDto updateCategory(Long categoryId, CategoryDto categoryDto) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        category.setName(categoryDto.name());
+        return CategoryDto.from(categoryRepository.save(category));
+    }
 }
