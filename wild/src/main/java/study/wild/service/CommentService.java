@@ -70,4 +70,12 @@ public class CommentService {
     public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
     }
+
+    /**
+     * 특정 게시글에 포함된 댓글들 삭제
+     */
+    @Transactional
+    public void deleteCommentByPostId(Long postId) {
+        commentRepository.deleteByPostId(postId);
+    }
 }

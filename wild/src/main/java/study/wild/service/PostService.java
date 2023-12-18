@@ -7,25 +7,22 @@ import org.springframework.transaction.annotation.Transactional;
 import study.wild.domain.Post;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
-import study.wild.repository.CategoryRepository;
-import study.wild.repository.CommentRepository;
 import study.wild.repository.PostRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+// TODO: PostCommentService 분리할 것
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
 
-    private final PostRepository postRepository;
-
-    private final CommentRepository commentRepository;
+    private final CommentService commentService;
 
     private final CategoryService categoryService;
 
-    private final CategoryRepository categoryRepository;
+    private final PostRepository postRepository;
 
     /**
      * 게시글 등록
@@ -92,7 +89,7 @@ public class PostService {
     @Transactional
     public void deletePost(Long postId) {
         postRepository.deleteById(postId);
-        commentRepository.deleteByPostId(postId);
+        commentService.deleteCommentByPostId(postId);
     }
 
     /**
