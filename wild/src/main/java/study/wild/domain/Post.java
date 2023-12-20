@@ -45,7 +45,7 @@ public class Post extends BaseTimeEntity {
     private String content;
 
     @Column(columnDefinition = "integer default 0")
-    private Long view = 0L;
+    private long view;
 
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;

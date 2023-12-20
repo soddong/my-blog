@@ -66,6 +66,7 @@ public class PostService {
      *
      * @param isDeleted 게시글 삭제 여부
      */
+    @Transactional
     public PostDto viewPostDetail(Long postId, boolean isDeleted) {
         Post post = postRepository.findPostByIdAndIsDeleted(postId, isDeleted)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
@@ -95,7 +96,6 @@ public class PostService {
     /**
      * 조회수 증가
      */
-    @Transactional
     public void countUpView(Post post) {
         post.increaseView();
     }
