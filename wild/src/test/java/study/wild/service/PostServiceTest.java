@@ -2,10 +2,8 @@ package study.wild.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
@@ -95,7 +93,7 @@ public class PostServiceTest {
         // given
         PostDto originalPost = createPostDto("원래 제목", "원래 내용");
         PostDto savedPost = postService.createPost(originalPost);
-        postService.deletePost(savedPost.id());
+        postService.deletePostById(savedPost.id());
 
         // when & then
         PostDto updatedPostDto = createPostDto("수정된 제목", "수정된 내용");
@@ -111,7 +109,7 @@ public class PostServiceTest {
         PostDto savedPost = postService.createPost(postDto);
 
         // when
-        postService.deletePost(savedPost.id());
+        postService.deletePostById(savedPost.id());
 
         // then
         assertThat(postService.viewPosts(false)).hasSize(0);

@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
 
-    private final CommentService commentService;
-
     private final CategoryService categoryService;
 
     private final PostRepository postRepository;
@@ -83,18 +81,17 @@ public class PostService {
     }
 
     /**
-     * 게시글 삭제 (soft delete)
-     */
-    @Transactional
-    public void deletePost(Long postId) {
-        postRepository.deleteById(postId);
-        commentService.deleteCommentByPostId(postId);
-    }
-
-    /**
      * 조회수 증가
      */
     public void increasePostView(Post post) {
         post.increaseView();
+    }
+
+    /**
+     * 게시글 삭제 (soft delete)
+     */
+    @Transactional
+    public void deletePostById(Long postId) {
+        postRepository.deleteById(postId);
     }
 }
