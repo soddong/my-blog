@@ -1,10 +1,8 @@
 package study.wild.service;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
@@ -15,7 +13,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
 class CategoryServiceTest {
@@ -62,7 +59,7 @@ class CategoryServiceTest {
         createAndSaveCategoryDto("여행");
 
         // when
-        List<CategoryDto> categories = categoryService.findAllCategories();
+        List<CategoryDto> categories = categoryService.getCategoryAll();
 
         // then
         assertThat(categories).hasSize(4) // default 포함
@@ -79,7 +76,7 @@ class CategoryServiceTest {
         categoryService.deleteCategory(savedCategory.id());
 
         // then
-        assertThat(categoryService.findAllCategories()).hasSize(1); // default 카테고리
+        assertThat(categoryService.getCategoryAll()).hasSize(1); // default 카테고리
     }
 
     @Test

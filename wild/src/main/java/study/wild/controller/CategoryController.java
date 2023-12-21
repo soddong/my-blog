@@ -38,7 +38,7 @@ public class CategoryController {
 
     @GetMapping
     public List<CategoryDto> getPosts() {
-        return categoryService.findAllCategories();
+        return categoryService.getCategoryAll();
     }
 
     @DeleteMapping("/{categoryId}")

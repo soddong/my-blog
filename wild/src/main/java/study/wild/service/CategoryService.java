@@ -1,12 +1,12 @@
 package study.wild.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.wild.domain.Category;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
+import study.wild.exception.CategoryNotFoundException;
 import study.wild.exception.NonEmptyCategoryException;
 import study.wild.repository.CategoryRepository;
 import study.wild.repository.PostRepository;
@@ -33,24 +33,24 @@ public class CategoryService {
     @Transactional
     public CategoryDto updateCategory(Long categoryId, CategoryDto categoryDto) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+                .orElseThrow(CategoryNotFoundException::new);
         category.setName(categoryDto.name());
-        return CategoryDto.from(categoryRepository.save(category));
+        return CategoryDto.from(category);
     }
 
-    public List<CategoryDto> findAllCategories() {
+    public List<CategoryDto> getCategoryAll() {
         return categoryRepository.findAll().stream()
                 .map(CategoryDto::from)
                 .collect(Collectors.toList());
     }
 
-    public CategoryDto findByPost(PostDto postDto) {
+    public CategoryDto getCategoriesByPost(PostDto postDto) {
         if (postDto.categoryId() == null) {
-            return CategoryDto.defaultCategory();
+            return CategoryDto.from(Category.defaultCategory());
         }
         return CategoryDto.from(
                 categoryRepository.findById(postDto.categoryId())
-                        .orElseThrow(() -> new EntityNotFoundException("Category not found " + postDto.categoryId()))
+                        .orElseThrow(CategoryNotFoundException::new)
         );
     }
 

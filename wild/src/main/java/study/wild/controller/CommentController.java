@@ -33,7 +33,7 @@ public class CommentController {
 
     @PutMapping("/{commentId}")
     public CommentDto updateComment(@PathVariable Long commentId, @RequestBody CommentDto commentDto) {
-        return commentService.updateComment(commentId, commentDto);
+        return commentService.editComment(commentId, commentDto);
     }
 
     @GetMapping

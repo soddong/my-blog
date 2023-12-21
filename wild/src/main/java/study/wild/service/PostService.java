@@ -1,12 +1,12 @@
 package study.wild.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.wild.domain.Post;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
+import study.wild.exception.PostNotFoundException;
 import study.wild.repository.PostRepository;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class PostService {
      */
     @Transactional
     public PostDto createPost(PostDto postDto) {
-        CategoryDto categoryDto = categoryService.findByPost(postDto);
+        CategoryDto categoryDto = categoryService.getCategoriesByPost(postDto);
 
         Post savedPost = postRepository.save(postDto.toEntity(categoryDto.toEntity()));
         return PostDto.from(savedPost);
@@ -40,13 +40,11 @@ public class PostService {
      */
     @Transactional
     public PostDto editPost(Long postId, PostDto postDto) {
-        return postRepository.findPostByIdAndIsDeleted(postId, false)
-                .map(post -> {
-                    post.setTitle(postDto.title());
-                    post.setContent(postDto.content());
-                    return PostDto.from(postRepository.save(post));
-                })
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+        Post findPost = postRepository.findPostByIdAndIsDeleted(postId, false)
+                .orElseThrow(PostNotFoundException::new);
+        findPost.setTitle(postDto.title());
+        findPost.setContent(postDto.content());
+        return PostDto.from(findPost);
     }
 
     /**
@@ -69,8 +67,8 @@ public class PostService {
     @Transactional
     public PostDto viewPostDetail(Long postId, boolean isDeleted) {
         Post post = postRepository.findPostByIdAndIsDeleted(postId, isDeleted)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
-        countUpView(post);
+                .orElseThrow(PostNotFoundException::new);
+        increasePostView(post);
         return PostDto.from(post);
     }
 
@@ -96,7 +94,7 @@ public class PostService {
     /**
      * 조회수 증가
      */
-    public void countUpView(Post post) {
+    public void increasePostView(Post post) {
         post.increaseView();
     }
 }

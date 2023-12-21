@@ -2,10 +2,8 @@ package study.wild.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import study.wild.dto.CommentDto;
 import study.wild.dto.PostDto;
@@ -13,7 +11,6 @@ import study.wild.dto.PostDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
 class CommentServiceTest {
@@ -58,7 +55,7 @@ class CommentServiceTest {
         CommentDto commentDto = createCommentDto("댓글 내용 수정");
 
         // when
-        CommentDto updateCommentDto = commentService.updateComment(commentId, commentDto);
+        CommentDto updateCommentDto = commentService.editComment(commentId, commentDto);
 
         // then
         assertThat(updateCommentDto.content()).isEqualTo(commentDto.content());

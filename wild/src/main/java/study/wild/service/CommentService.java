@@ -1,11 +1,12 @@
 package study.wild.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.wild.domain.Comment;
 import study.wild.dto.CommentDto;
+import study.wild.exception.CommentNotFoundException;
+import study.wild.exception.PostNotFoundException;
 import study.wild.repository.CommentRepository;
 import study.wild.repository.PostRepository;
 
@@ -27,7 +28,7 @@ public class CommentService {
     public CommentDto saveComment(Long postId, CommentDto contentDto) {
         Comment comment = new Comment();
         comment.setPost(postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found")));
+                .orElseThrow(PostNotFoundException::new));
         comment.setContent(contentDto.content());
         return CommentDto.from(commentRepository.save(comment));
     }
@@ -36,11 +37,11 @@ public class CommentService {
      * 댓글 수정
      */
     @Transactional
-    public CommentDto updateComment(Long commentId, CommentDto commentDto) {
+    public CommentDto editComment(Long commentId, CommentDto commentDto) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+                .orElseThrow(CommentNotFoundException::new);
         comment.setContent(commentDto.content());
-        return CommentDto.from(commentRepository.save(comment));
+        return CommentDto.from(comment);
     }
 
     /**

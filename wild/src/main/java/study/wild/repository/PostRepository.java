@@ -9,6 +9,7 @@ import study.wild.domain.Post;
 import java.util.List;
 import java.util.Optional;
 
+// TODO: JPQL -> JPA SPRING DATA
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p WHERE p.id = :id AND p.deleted = :isDeleted")
@@ -18,5 +19,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByAndDeleted(@Param("isDeleted") boolean isDeleted);
 
     @Query("SELECT p FROM Post p WHERE p.category.id = :categoryId AND p.deleted = :isDeleted")
-    List<Post> findPostByCategoryIdAndDeleted(@Param("categoryId") Long categoryId, boolean isDeleted);
+    List<Post> findPostByCategoryIdAndDeleted(@Param("categoryId") Long categoryId, @Param("isDeleted") boolean isDeleted);
 }
