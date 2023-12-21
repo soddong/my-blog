@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import study.wild.domain.Category;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
 import study.wild.repository.PostRepository;
@@ -13,7 +14,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @SpringBootTest
 @Transactional
@@ -23,13 +23,7 @@ public class PostServiceTest {
     private PostService postService;
 
     @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
     private PostRepository postRepository;
-
-    @Autowired
-    private PostCategoryService postCategoryService;
 
 
     @Test
@@ -38,7 +32,7 @@ public class PostServiceTest {
         PostDto postDto = createPostDto("제목A", "내용A");
 
         // when
-        PostDto savedPostDto = postCategoryService.createPostWithCategory(postDto);
+        PostDto savedPostDto = postService.createPost(postDto, CategoryDto.from(Category.defaultCategory()));
 
         // then
         assertThat(savedPostDto).isNotNull();
@@ -64,27 +58,23 @@ public class PostServiceTest {
 
     @Test
     public void 특정_게시글_조회_테스트() {
-        // given
-        PostDto postDto = createPostDto("제목A", "내용A");
-
-        // when
-        PostDto findedPostDto = postService.viewPostDetail(postCategoryService.createPostWithCategory(postDto).id(), false);
+        // given & when
+        PostDto findedPostDto = postService.viewPostDetail(createAndSavePostDto("원래 제목", "원래 내용"));
 
         // then
-        assertThat(findedPostDto.title()).isEqualTo("제목A");
-        assertThat(findedPostDto.content()).isEqualTo("내용A");
+        assertThat(findedPostDto.title()).isEqualTo("원래 제목");
+        assertThat(findedPostDto.content()).isEqualTo("원래 내용");
     }
 
     @Test
     public void 게시글_수정_테스트() {
         // given
-        PostDto originalPost = createPostDto("원래 제목", "원래 내용");
-        PostDto savedPost = postCategoryService.createPostWithCategory(originalPost);
+        Long postId = createAndSavePostDto("원래 제목", "원래 내용");
 
         PostDto updatedPostDto = createPostDto("수정된 제목", "수정된 내용");
 
         // when
-        PostDto updatedPost = postService.editPost(savedPost.id(), updatedPostDto);
+        PostDto updatedPost = postService.editPost(postId, updatedPostDto);
 
         // then
         assertThat(updatedPost.title()).isEqualTo("수정된 제목");
@@ -94,13 +84,12 @@ public class PostServiceTest {
     @Test
     public void 삭제된_게시글_수정시_예외발생() {
         // given
-        PostDto originalPost = createPostDto("원래 제목", "원래 내용");
-        PostDto savedPost = postCategoryService.createPostWithCategory(originalPost);
-        postService.deletePostById(savedPost.id());
+        Long postId = createAndSavePostDto("원래 제목", "원래 내용");
+        postService.deletePostById(postId);
 
         // when & then
         PostDto updatedPostDto = createPostDto("수정된 제목", "수정된 내용");
-        assertThatThrownBy(() -> postService.editPost(savedPost.id(), updatedPostDto))
+        assertThatThrownBy(() -> postService.editPost(postId, updatedPostDto))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining("Post not found");
     }
@@ -108,17 +97,15 @@ public class PostServiceTest {
     @Test
     public void 게시물_soft_삭제_테스트() {
         // given
-        PostDto postDto = createPostDto("제목Q", "내용Q");
-        PostDto savedPost = postCategoryService.createPostWithCategory(postDto);
+        Long postId = createAndSavePostDto("제목Q", "내용Q");
 
         // when
-        postService.deletePostById(savedPost.id());
+        postService.deletePostById(postId);
 
         // then
         assertThat(postService.viewPosts(false)).hasSize(0);
         assertThat(postService.viewPosts(true)).hasSize(1);
-        assertDoesNotThrow(() -> postService.viewPostDetail(savedPost.id(), true));
-        assertThatThrownBy(() -> postService.viewPostDetail(savedPost.id(), false))
+        assertThatThrownBy(() -> postService.viewPostDetail(postId))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining("Post not found");
     }
@@ -130,7 +117,7 @@ public class PostServiceTest {
 
         // when & then
         for (int i = 1; i < 5; i++) {
-            postService.viewPostDetail(postId, false);
+            postService.viewPostDetail(postId);
             assertThat(postRepository.findPostByIdAndIsDeleted(postId, false)
                     .get().getView())
                     .isEqualTo(i);
@@ -138,35 +125,13 @@ public class PostServiceTest {
         }
     }
 
-    @Test
-    void 특정_카테고리내_게시글들_조회_테스트() {
-        // given
-        CategoryDto savedCategoryDto1 = categoryService.createCategory(new CategoryDto(null, "공부"));
-        CategoryDto savedCategoryDto2 = categoryService.createCategory(new CategoryDto(null, "일기"));
-
-        postCategoryService.createPostWithCategory(createPostDto("제목", savedCategoryDto1.id(), "내용"));
-        postCategoryService.createPostWithCategory(createPostDto("제목1", savedCategoryDto1.id(), "내용"));
-        postCategoryService.createPostWithCategory(createPostDto("제목2", savedCategoryDto2.id(), "내용"));
-
-        // when
-        List<PostDto> posts1 = postService.viewPostsByCategory(savedCategoryDto1.id(), false);
-        List<PostDto> posts2 = postService.viewPostsByCategory(savedCategoryDto2.id(), false);
-
-        // then
-        assertThat(posts1).hasSize(2);
-        assertThat(posts2).hasSize(1);
-    }
-
     private Long createAndSavePostDto(String title, String content) {
         PostDto postDto = createPostDto(title, content);
-        return postCategoryService.createPostWithCategory(postDto).id();
+        CategoryDto categoryDto = CategoryDto.from(Category.defaultCategory());
+        return postService.createPost(postDto, categoryDto).id();
     }
 
     private PostDto createPostDto(String title, String content) {
         return new PostDto(null, null, title, content);
-    }
-
-    private PostDto createPostDto(String title, Long categoryId, String content) {
-        return new PostDto(null, categoryId, title, content);
     }
 }

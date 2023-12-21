@@ -34,7 +34,7 @@ class PostCommentServiceTest {
         }
 
         // when
-        postCommentService.deletePost(postId);
+        postCommentService.deletePostWithComment(postId);
 
         // then
         assertThat(commentService.getCommentAll())
@@ -51,7 +51,7 @@ class PostCommentServiceTest {
     }
 
     private Long saveAndGetCommentId(Long postId, String content) {
-        CommentDto commentDto = commentService.saveComment(
+        CommentDto commentDto = postCommentService.createCommentWithPost(
                 postId,
                 createCommentDto(content));
         return commentDto.id();

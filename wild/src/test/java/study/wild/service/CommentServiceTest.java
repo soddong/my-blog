@@ -19,10 +19,10 @@ class CommentServiceTest {
     private CommentService commentService;
 
     @Autowired
-    private PostService postService;
+    private PostCategoryService postCategoryService;
 
     @Autowired
-    private PostCategoryService postCategoryService;
+    private PostCommentService postCommentService;
 
     @Test
     public void 댓글_등록_테스트() {
@@ -31,7 +31,7 @@ class CommentServiceTest {
         CommentDto commentDto = createCommentDto("댓글 내용");
 
         // when
-        CommentDto saveComment = commentService.saveComment(postId, commentDto);
+        CommentDto saveComment = postCommentService.createCommentWithPost(postId, commentDto);
 
         // then
         assertThat(saveComment.content()).isEqualTo(commentDto.content());
@@ -43,7 +43,7 @@ class CommentServiceTest {
         CommentDto commentDto = createCommentDto("댓글 내용");
 
         // when & then
-        assertThatThrownBy(() -> commentService.saveComment(5L, commentDto))
+        assertThatThrownBy(() -> postCommentService.createCommentWithPost(5L, commentDto))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining("Post not found");
     }
@@ -68,8 +68,8 @@ class CommentServiceTest {
     public void 특정_게시글의_댓글_조회_테스트() {
         // given
         Long postId = createPostDtoAndGetId("제목", "내용");
-        commentService.saveComment(postId, createCommentDto("댓글1"));
-        commentService.saveComment(postId, createCommentDto("댓글2"));
+        postCommentService.createCommentWithPost(postId, createCommentDto("댓글1"));
+        postCommentService.createCommentWithPost(postId, createCommentDto("댓글2"));
 
         // when & then
         assertThat(commentService.getCommentsByPost(postId))
@@ -102,7 +102,7 @@ class CommentServiceTest {
     }
 
     private Long saveAndGetCommentId(Long postId, String content) {
-        CommentDto commentDto = commentService.saveComment(
+        CommentDto commentDto = postCommentService.createCommentWithPost(
                 postId,
                 createCommentDto(content));
         return commentDto.id();

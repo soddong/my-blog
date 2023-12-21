@@ -12,7 +12,6 @@ import study.wild.repository.CategoryRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO: CategoryPostService 분리할 것
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor

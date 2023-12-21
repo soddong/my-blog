@@ -40,16 +40,16 @@ public class PostController {
 
     @GetMapping("/categories/{categoryId}/posts")
     public List<PostDto> getPostByCategory(@PathVariable Long categoryId) {
-        return postService.viewPostsByCategory(categoryId, false);
+        return postService.getPostsByCategory(categoryId, false);
     }
 
     @GetMapping("/{postId}")
     public PostDto getPost(@PathVariable Long postId) {
-        return postService.viewPostDetail(postId, false);
+        return postService.viewPostDetail(postId);
     }
 
     @DeleteMapping("/{postId}")
     public void deletePost(@PathVariable Long postId) {
-        postCommentService.deletePost(postId);
+        postCommentService.deletePostWithComment(postId);
     }
 }

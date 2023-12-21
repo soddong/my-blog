@@ -6,9 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import study.wild.domain.Comment;
 import study.wild.dto.CommentDto;
 import study.wild.exception.CommentNotFoundException;
-import study.wild.exception.PostNotFoundException;
 import study.wild.repository.CommentRepository;
-import study.wild.repository.PostRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,17 +17,12 @@ import java.util.stream.Collectors;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final PostRepository postRepository;
 
     /**
      * 댓글 등록
      */
     @Transactional
-    public CommentDto saveComment(Long postId, CommentDto contentDto) {
-        Comment comment = new Comment();
-        comment.setPost(postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new));
-        comment.setContent(contentDto.content());
+    public CommentDto saveComment(Comment comment) {
         return CommentDto.from(commentRepository.save(comment));
     }
 

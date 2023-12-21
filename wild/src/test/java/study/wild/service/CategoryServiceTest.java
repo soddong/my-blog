@@ -23,9 +23,6 @@ class CategoryServiceTest {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private PostService postService;
-
     @Test
     public void 카테고리_등록_테스트() {
         // given
@@ -90,7 +87,7 @@ class CategoryServiceTest {
         postCategoryService.createPostWithCategory(postDto);
 
         // when & then
-        assertThatThrownBy(() -> categoryService.deleteCategory(savedCategory.id()))
+        assertThatThrownBy(() -> postCategoryService.deleteCategoryWithValidation(savedCategory.id()))
                 .isInstanceOf(NonEmptyCategoryException.class);
     }
 

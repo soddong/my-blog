@@ -12,12 +12,11 @@ import study.wild.repository.PostRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO: PostCommentService 분리할 것
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
-    
+
     private final PostRepository postRepository;
 
     /**
@@ -54,22 +53,29 @@ public class PostService {
     }
 
     /**
-     * 특정 게시글 조회 (삭제 여부 조건에 필터링한 게시글)
-     *
-     * @param isDeleted 게시글 삭제 여부
+     * 특정 게시글을 조회하고, 조회수 증가
      */
     @Transactional
-    public PostDto viewPostDetail(Long postId, boolean isDeleted) {
-        Post post = postRepository.findPostByIdAndIsDeleted(postId, isDeleted)
-                .orElseThrow(PostNotFoundException::new);
+    public PostDto viewPostDetail(Long postId) {
+        Post post = getPost(postId, false);
         increasePostView(post);
         return PostDto.from(post);
     }
 
     /**
+     * 특정 게시글 조회 (삭제 여부 조건에 필터링한 게시글)
+     *
+     * @param isDeleted 게시글 삭제 여부
+     */
+    public Post getPost(Long postId, boolean isDeleted) {
+        return postRepository.findPostByIdAndIsDeleted(postId, isDeleted)
+                .orElseThrow(PostNotFoundException::new);
+    }
+
+    /**
      * 특정 카테고리 내 게시물 조회
      */
-    public List<PostDto> viewPostsByCategory(Long categoryId, boolean isDeleted) {
+    public List<PostDto> getPostsByCategory(Long categoryId, boolean isDeleted) {
         return postRepository.findPostByCategoryIdAndDeleted(categoryId, isDeleted)
                 .stream()
                 .map(PostDto::from)
