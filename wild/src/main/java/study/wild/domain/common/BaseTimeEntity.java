@@ -1,4 +1,4 @@
-package study.wild.domain;
+package study.wild.domain.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

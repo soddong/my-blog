@@ -3,9 +3,9 @@ package study.wild.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.wild.domain.Comment;
+import study.wild.common.exception.CommentNotFoundException;
+import study.wild.domain.entity.Comment;
 import study.wild.dto.CommentDto;
-import study.wild.exception.CommentNotFoundException;
 import study.wild.repository.CommentRepository;
 
 import java.util.List;

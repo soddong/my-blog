@@ -3,10 +3,10 @@ package study.wild.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.wild.domain.Post;
+import study.wild.common.exception.PostNotFoundException;
+import study.wild.domain.entity.Post;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
-import study.wild.exception.PostNotFoundException;
 import study.wild.repository.PostRepository;
 
 import java.util.List;

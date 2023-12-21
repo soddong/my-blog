@@ -1,6 +1,6 @@
 package study.wild.dto;
 
-import study.wild.domain.Comment;
+import study.wild.domain.entity.Comment;
 
 public record CommentDto(
         Long id,

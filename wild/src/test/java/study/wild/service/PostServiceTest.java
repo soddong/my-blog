@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import study.wild.domain.Category;
+import study.wild.domain.entity.Category;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
 import study.wild.repository.PostRepository;
@@ -37,6 +37,20 @@ public class PostServiceTest {
         // then
         assertThat(savedPostDto).isNotNull();
         assertThat(savedPostDto.title()).isEqualTo("제목A");
+        assertThat(savedPostDto.content()).isEqualTo("내용A");
+    }
+
+    @Test
+    public void 게시글의_제목은_1자이상_50자이하_여야함() {
+        // given
+        PostDto postDto = createPostDto("", "내용A");
+
+        // when
+        PostDto savedPostDto = postService.createPost(postDto, CategoryDto.from(Category.defaultCategory()));
+
+        // then
+        assertThat(savedPostDto).isNotNull();
+        assertThat(savedPostDto.title()).isEqualTo("");
         assertThat(savedPostDto.content()).isEqualTo("내용A");
     }
 

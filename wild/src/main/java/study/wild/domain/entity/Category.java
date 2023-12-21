@@ -1,4 +1,4 @@
-package study.wild.domain;
+package study.wild.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;

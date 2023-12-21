@@ -1,4 +1,4 @@
-package study.wild.exception;
+package study.wild.common.exception;
 
 import jakarta.persistence.EntityExistsException;
 

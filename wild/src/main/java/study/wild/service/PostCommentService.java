@@ -3,7 +3,7 @@ package study.wild.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.wild.domain.Comment;
+import study.wild.domain.entity.Comment;
 import study.wild.dto.CommentDto;
 
 @Service

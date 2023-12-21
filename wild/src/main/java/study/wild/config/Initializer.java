@@ -3,7 +3,7 @@ package study.wild.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import study.wild.domain.Category;
+import study.wild.domain.entity.Category;
 import study.wild.repository.CategoryRepository;
 
 @Component

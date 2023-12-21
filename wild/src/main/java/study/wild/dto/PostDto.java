@@ -1,7 +1,7 @@
 package study.wild.dto;
 
-import study.wild.domain.Category;
-import study.wild.domain.Post;
+import study.wild.domain.entity.Category;
+import study.wild.domain.entity.Post;
 
 public record PostDto(
         Long id,

@@ -3,9 +3,9 @@ package study.wild.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import study.wild.common.exception.NonEmptyCategoryException;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
-import study.wild.exception.NonEmptyCategoryException;
 
 @Service
 @Transactional(readOnly = true)

@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import study.wild.common.exception.NonEmptyCategoryException;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
-import study.wild.exception.NonEmptyCategoryException;
 
 import java.util.List;
 
