@@ -1,10 +1,6 @@
 package study.wild.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,4 +29,12 @@ public class Category {
         this.id = id;
         this.name = name;
     }
+
+    public static Category defaultCategory() {
+        return Category.builder().
+                id(1L)
+                .name("")
+                .build();
+    }
+
 }

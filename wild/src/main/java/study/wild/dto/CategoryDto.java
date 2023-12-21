@@ -10,10 +10,6 @@ public record CategoryDto(
         return new CategoryDto(category.getId(), category.getName());
     }
 
-    public static CategoryDto defaultCategory() {
-        return new CategoryDto(1L, "");
-    }
-
     public Category toEntity() {
         return new Category(id, name);
     }
