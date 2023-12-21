@@ -7,9 +7,7 @@ import study.wild.domain.Category;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
 import study.wild.exception.CategoryNotFoundException;
-import study.wild.exception.NonEmptyCategoryException;
 import study.wild.repository.CategoryRepository;
-import study.wild.repository.PostRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,16 +18,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CategoryService {
 
-    private final PostRepository postRepository;
-
     private final CategoryRepository categoryRepository;
 
+    /**
+     * 카테고리 등록
+     */
     @Transactional
     public CategoryDto createCategory(CategoryDto categoryDto) {
         Category category = categoryRepository.save(categoryDto.toEntity());
         return CategoryDto.from(category);
     }
 
+    /**
+     * 카테고리 업데이트
+     */
     @Transactional
     public CategoryDto updateCategory(Long categoryId, CategoryDto categoryDto) {
         Category category = categoryRepository.findById(categoryId)
@@ -38,31 +40,39 @@ public class CategoryService {
         return CategoryDto.from(category);
     }
 
+    /**
+     * 카테고리 삭제
+     */
+    @Transactional
+    public void deleteCategory(Long categoryId) {
+        categoryRepository.deleteById(categoryId);
+    }
+
+    /**
+     * 전체 카테고리 조회
+     */
     public List<CategoryDto> getCategoryAll() {
         return categoryRepository.findAll().stream()
                 .map(CategoryDto::from)
                 .collect(Collectors.toList());
     }
 
-    public CategoryDto getCategoriesByPost(PostDto postDto) {
+    /**
+     * 특정 카테고리 조회
+     */
+    public CategoryDto getCategory(Long categoryId) {
+        return CategoryDto.from(categoryRepository.findById(categoryId)
+                .orElseThrow(CategoryNotFoundException::new));
+    }
+
+    /**
+     * 게시글이 포함된 카테고리 찾기
+     */
+    public CategoryDto getCategoryByPost(PostDto postDto) {
         if (postDto.categoryId() == null) {
             return CategoryDto.from(Category.defaultCategory());
         }
-        return CategoryDto.from(
-                categoryRepository.findById(postDto.categoryId())
-                        .orElseThrow(CategoryNotFoundException::new)
-        );
+        return getCategory(postDto.categoryId());
     }
 
-    @Transactional
-    public void deleteCategory(Long categoryId) {
-        if (hasPostInCategory(categoryId)) {
-            throw new NonEmptyCategoryException();
-        }
-        categoryRepository.deleteById(categoryId);
-    }
-
-    public boolean hasPostInCategory(Long categoryId) {
-        return !postRepository.findPostByCategoryIdAndDeleted(categoryId, false).isEmpty();
-    }
 }

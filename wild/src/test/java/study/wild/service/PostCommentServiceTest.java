@@ -22,6 +22,9 @@ class PostCommentServiceTest {
     @Autowired
     PostService postService;
 
+    @Autowired
+    PostCategoryService postCategoryService;
+
     @Test
     void 게시글_삭제시_연관댓글_삭제() {
         // given
@@ -40,7 +43,7 @@ class PostCommentServiceTest {
 
     private Long createPostDtoAndGetId(String title, String content) {
         PostDto postDto = new PostDto(null, null, title, content);
-        return postService.createPost(postDto).id();
+        return postCategoryService.createPostWithCategory(postDto).id();
     }
 
     private CommentDto createCommentDto(String content) {

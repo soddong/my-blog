@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import study.wild.dto.PostDto;
+import study.wild.service.PostCategoryService;
 import study.wild.service.PostCommentService;
 import study.wild.service.PostService;
 
@@ -18,10 +19,12 @@ public class PostController {
 
     private final PostCommentService postCommentService;
 
+    private final PostCategoryService postCategoryService;
+
     @PostMapping("/posts")
     @ResponseStatus(HttpStatus.CREATED)
     public PostDto save(@RequestBody PostDto postDto) {
-        return postService.createPost(postDto);
+        return postCategoryService.createPostWithCategory(postDto);
     }
 
     @PutMapping("/posts/{postId}")

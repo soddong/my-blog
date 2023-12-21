@@ -18,6 +18,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class CategoryServiceTest {
 
     @Autowired
+    private PostCategoryService postCategoryService;
+
+    @Autowired
     private CategoryService categoryService;
 
     @Autowired
@@ -84,7 +87,7 @@ class CategoryServiceTest {
         // given
         CategoryDto savedCategory = categoryService.createCategory(createCategoryDto("공부"));
         PostDto postDto = createPostDto("제목", savedCategory.id(), "내용");
-        postService.createPost(postDto);
+        postCategoryService.createPostWithCategory(postDto);
 
         // when & then
         assertThatThrownBy(() -> categoryService.deleteCategory(savedCategory.id()))

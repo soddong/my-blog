@@ -21,6 +21,9 @@ class CommentServiceTest {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private PostCategoryService postCategoryService;
+
     @Test
     public void 댓글_등록_테스트() {
         // given
@@ -91,7 +94,7 @@ class CommentServiceTest {
 
     private Long createPostDtoAndGetId(String title, String content) {
         PostDto postDto = new PostDto(null, null, title, content);
-        return postService.createPost(postDto).id();
+        return postCategoryService.createPostWithCategory(postDto).id();
     }
 
     private CommentDto createCommentDto(String content) {

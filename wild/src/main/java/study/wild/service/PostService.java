@@ -17,18 +17,14 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
-
-    private final CategoryService categoryService;
-
+    
     private final PostRepository postRepository;
 
     /**
      * 게시글 등록
      */
     @Transactional
-    public PostDto createPost(PostDto postDto) {
-        CategoryDto categoryDto = categoryService.getCategoriesByPost(postDto);
-
+    public PostDto createPost(PostDto postDto, CategoryDto categoryDto) {
         Post savedPost = postRepository.save(postDto.toEntity(categoryDto.toEntity()));
         return PostDto.from(savedPost);
     }
@@ -93,5 +89,9 @@ public class PostService {
     @Transactional
     public void deletePostById(Long postId) {
         postRepository.deleteById(postId);
+    }
+
+    public boolean hasPostInCategory(Long categoryId) {
+        return !postRepository.findPostByCategoryIdAndDeleted(categoryId, false).isEmpty();
     }
 }

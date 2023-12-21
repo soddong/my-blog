@@ -28,6 +28,9 @@ public class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private PostCategoryService postCategoryService;
+
 
     @Test
     public void 게시글_등록_테스트() {
@@ -35,7 +38,7 @@ public class PostServiceTest {
         PostDto postDto = createPostDto("제목A", "내용A");
 
         // when
-        PostDto savedPostDto = postService.createPost(postDto);
+        PostDto savedPostDto = postCategoryService.createPostWithCategory(postDto);
 
         // then
         assertThat(savedPostDto).isNotNull();
@@ -65,7 +68,7 @@ public class PostServiceTest {
         PostDto postDto = createPostDto("제목A", "내용A");
 
         // when
-        PostDto findedPostDto = postService.viewPostDetail(postService.createPost(postDto).id(), false);
+        PostDto findedPostDto = postService.viewPostDetail(postCategoryService.createPostWithCategory(postDto).id(), false);
 
         // then
         assertThat(findedPostDto.title()).isEqualTo("제목A");
@@ -76,7 +79,7 @@ public class PostServiceTest {
     public void 게시글_수정_테스트() {
         // given
         PostDto originalPost = createPostDto("원래 제목", "원래 내용");
-        PostDto savedPost = postService.createPost(originalPost);
+        PostDto savedPost = postCategoryService.createPostWithCategory(originalPost);
 
         PostDto updatedPostDto = createPostDto("수정된 제목", "수정된 내용");
 
@@ -92,7 +95,7 @@ public class PostServiceTest {
     public void 삭제된_게시글_수정시_예외발생() {
         // given
         PostDto originalPost = createPostDto("원래 제목", "원래 내용");
-        PostDto savedPost = postService.createPost(originalPost);
+        PostDto savedPost = postCategoryService.createPostWithCategory(originalPost);
         postService.deletePostById(savedPost.id());
 
         // when & then
@@ -106,7 +109,7 @@ public class PostServiceTest {
     public void 게시물_soft_삭제_테스트() {
         // given
         PostDto postDto = createPostDto("제목Q", "내용Q");
-        PostDto savedPost = postService.createPost(postDto);
+        PostDto savedPost = postCategoryService.createPostWithCategory(postDto);
 
         // when
         postService.deletePostById(savedPost.id());
@@ -141,9 +144,9 @@ public class PostServiceTest {
         CategoryDto savedCategoryDto1 = categoryService.createCategory(new CategoryDto(null, "공부"));
         CategoryDto savedCategoryDto2 = categoryService.createCategory(new CategoryDto(null, "일기"));
 
-        postService.createPost(createPostDto("제목", savedCategoryDto1.id(), "내용"));
-        postService.createPost(createPostDto("제목1", savedCategoryDto1.id(), "내용"));
-        postService.createPost(createPostDto("제목2", savedCategoryDto2.id(), "내용"));
+        postCategoryService.createPostWithCategory(createPostDto("제목", savedCategoryDto1.id(), "내용"));
+        postCategoryService.createPostWithCategory(createPostDto("제목1", savedCategoryDto1.id(), "내용"));
+        postCategoryService.createPostWithCategory(createPostDto("제목2", savedCategoryDto2.id(), "내용"));
 
         // when
         List<PostDto> posts1 = postService.viewPostsByCategory(savedCategoryDto1.id(), false);
@@ -156,7 +159,7 @@ public class PostServiceTest {
 
     private Long createAndSavePostDto(String title, String content) {
         PostDto postDto = createPostDto(title, content);
-        return postService.createPost(postDto).id();
+        return postCategoryService.createPostWithCategory(postDto).id();
     }
 
     private PostDto createPostDto(String title, String content) {
