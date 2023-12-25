@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static study.wild.config.Initializer.INITIAL_CATEGORY_ID;
+import static study.wild.config.Initializer.INITIAL_CATEGORY_NAME;
+
 @Entity
 @Getter
 @Setter
@@ -32,8 +35,8 @@ public class Category {
 
     public static Category defaultCategory() {
         return Category.builder().
-                id(1L)
-                .name("")
+                id(INITIAL_CATEGORY_ID)
+                .name(INITIAL_CATEGORY_NAME)
                 .build();
     }
 
