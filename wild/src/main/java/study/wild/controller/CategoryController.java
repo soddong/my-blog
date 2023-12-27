@@ -26,17 +26,17 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}")
-    public CategoryDto updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDto categoryDto) {
+    public CategoryDto updateCategory(@PathVariable("categoryId") Long categoryId, @RequestBody CategoryDto categoryDto) {
         return categoryService.updateCategory(categoryId, categoryDto);
     }
 
     @GetMapping
-    public List<CategoryDto> getPosts() {
+    public List<CategoryDto> getCategories() {
         return categoryService.getCategoryAll();
     }
 
     @DeleteMapping("/{categoryId}")
-    public void deleteCategory(@PathVariable Long categoryId) {
+    public void deleteCategory(@PathVariable("categoryId") Long categoryId) {
         postCategoryService.deleteCategoryWithValidation(categoryId);
     }
 
