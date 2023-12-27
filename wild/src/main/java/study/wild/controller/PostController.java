@@ -29,7 +29,7 @@ public class PostController {
 
     @PutMapping("/posts/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public PostDto updatePost(@PathVariable Long postId, @RequestBody PostDto postDto) {
+    public PostDto updatePost(@PathVariable("postId") Long postId, @RequestBody PostDto postDto) {
         return postService.editPost(postId, postDto);
     }
 
@@ -39,17 +39,17 @@ public class PostController {
     }
 
     @GetMapping("/categories/{categoryId}/posts")
-    public List<PostDto> getPostByCategory(@PathVariable Long categoryId) {
+    public List<PostDto> getPostByCategory(@PathVariable("categoryId") Long categoryId) {
         return postService.getPostsByCategory(categoryId, false);
     }
 
-    @GetMapping("/{postId}")
-    public PostDto getPost(@PathVariable Long postId) {
+    @GetMapping("/posts/{postId}")
+    public PostDto getPost(@PathVariable("postId") Long postId) {
         return postService.viewPostDetail(postId);
     }
 
-    @DeleteMapping("/{postId}")
-    public void deletePost(@PathVariable Long postId) {
+    @DeleteMapping("/posts/{postId}")
+    public void deletePost(@PathVariable("postId") Long postId) {
         postCommentService.deletePostWithComment(postId);
     }
 }
