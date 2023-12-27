@@ -24,7 +24,6 @@ public class PostRepositoryTest {
     private CategoryRepository categoryRepository;
 
     private Category category;
-    private Long id = 1L;
 
     @BeforeEach
     void init() {
@@ -105,7 +104,6 @@ public class PostRepositoryTest {
 
     private Post createPost(String title, String content) {
         return Post.builder()
-                .id(id++)
                 .title(title)
                 .content(content)
                 .category(getTestCategory())

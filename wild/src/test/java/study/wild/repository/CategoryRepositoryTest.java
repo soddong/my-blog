@@ -17,8 +17,6 @@ public class CategoryRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    private Long id = 2L;
-
     @Test
     public void saveTest() {
         // given
@@ -84,7 +82,6 @@ public class CategoryRepositoryTest {
 
     private Category createCategory(String name) {
         return Category.builder()
-                .id(id++)
                 .name(name)
                 .build();
     }
