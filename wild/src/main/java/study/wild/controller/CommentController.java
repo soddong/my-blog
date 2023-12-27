@@ -12,31 +12,30 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/posts/{postId}/comments")
 public class CommentController {
 
     private final CommentService commentService;
 
     private final PostCommentService postCommentService;
 
-    @PostMapping
+    @PostMapping("/posts/{postId}/comments")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentDto save(@PathVariable Long postId, @RequestBody CommentDto commentDto) {
+    public CommentDto save(@PathVariable("postId") Long postId, @RequestBody CommentDto commentDto) {
         return postCommentService.createCommentWithPost(postId, commentDto);
     }
 
-    @PutMapping("/{commentId}")
-    public CommentDto updateComment(@PathVariable Long commentId, @RequestBody CommentDto commentDto) {
+    @PutMapping("/comments/{commentId}")
+    public CommentDto updateComment(@PathVariable("commentId") Long commentId, @RequestBody CommentDto commentDto) {
         return commentService.editComment(commentId, commentDto);
     }
 
-    @GetMapping
-    public List<CommentDto> getCommentsByPost(@PathVariable Long postId) {
+    @GetMapping("/posts/{postId}/comments")
+    public List<CommentDto> getCommentsByPost(@PathVariable("postId") Long postId) {
         return commentService.getCommentsByPost(postId);
     }
 
-    @DeleteMapping("/{commentId}")
-    public void deleteComment(@PathVariable Long commentId) {
-        postCommentService.deletePostWithComment(commentId);
+    @DeleteMapping("/comments/{commentId}")
+    public void deleteComment(@PathVariable("commentId") Long commentId) {
+        commentService.deleteComment(commentId);
     }
 }
