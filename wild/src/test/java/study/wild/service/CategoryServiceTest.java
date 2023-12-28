@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import study.wild.common.exception.CategoryNotFoundException;
 import study.wild.common.exception.NonEmptyCategoryException;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
@@ -89,6 +90,13 @@ class CategoryServiceTest {
         // when & then
         assertThatThrownBy(() -> postCategoryService.deleteCategoryWithValidation(savedCategory.id()))
                 .isInstanceOf(NonEmptyCategoryException.class);
+    }
+
+    @Test
+    public void 조회하고자_하는_게시물이_없으면_예외발생() {
+        assertThatThrownBy(() -> categoryService.getCategory(2L))
+                .isInstanceOf(CategoryNotFoundException.class);
+
     }
 
     private CategoryDto createCategoryDto(String name) {

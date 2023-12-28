@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import study.wild.common.exception.PostNotFoundException;
 import study.wild.domain.entity.Category;
 import study.wild.dto.CategoryDto;
 import study.wild.dto.PostDto;
@@ -137,6 +138,12 @@ public class PostServiceTest {
                     .isEqualTo(i);
 
         }
+    }
+
+    @Test
+    public void 등록되지않은_게시글_조회시_예외발생() {
+        assertThatThrownBy(() -> postService.getPost(1L, false))
+                .isInstanceOf(PostNotFoundException.class);
     }
 
     private Long createAndSavePostDto(String title, String content) {

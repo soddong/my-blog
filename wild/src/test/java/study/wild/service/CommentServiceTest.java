@@ -92,6 +92,11 @@ class CommentServiceTest {
                 .hasSize(0);
     }
 
+    @Test
+    public void 등록되지_않은_댓글_수정_시도시_에러발생() {
+        assertThatThrownBy(() -> commentService.editComment(1L, createCommentDto("댓글 내용")));
+    }
+
     private Long createPostDtoAndGetId(String title, String content) {
         PostDto postDto = new PostDto(null, null, title, content);
         return postCategoryService.createPostWithCategory(postDto).id();
