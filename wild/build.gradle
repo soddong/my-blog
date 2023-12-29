@@ -61,5 +61,19 @@ jacoco {
 }
 
 jacocoTestReport {
-    dependsOn test
+    excludedClassFilesForReport(classDirectories)
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+private excludedClassFilesForReport(classDirectories) {
+    classDirectories.setFrom(
+            files(classDirectories.files.collect {
+                fileTree(dir: it, exclude: [
+                        "**/Q*",
+                        "**/*Dto*",
+                        "**/*Application*",
+                        "**/*Config*"
+                ])
+            })
+    )
 }
