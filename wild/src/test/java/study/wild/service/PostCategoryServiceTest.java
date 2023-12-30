@@ -44,10 +44,10 @@ class PostCategoryServiceTest {
     }
 
     private PostDto createPostDto(String title, Long categoryId, String content) {
-        return new PostDto(null, categoryId, title, content);
+        return new PostDto(null, categoryId, title, content, 0);
     }
 
     private PostDto createPostDto(String title, String content) {
-        return new PostDto(null, null, title, content);
+        return new PostDto(null, null, title, content, 0);
     }
 }

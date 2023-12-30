@@ -109,6 +109,6 @@ class CategoryServiceTest {
     }
 
     private PostDto createPostDto(String title, Long categoryId, String content) {
-        return new PostDto(null, categoryId, title, content);
+        return new PostDto(null, categoryId, title, content, 0);
     }
 }

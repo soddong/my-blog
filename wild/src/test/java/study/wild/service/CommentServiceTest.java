@@ -98,7 +98,7 @@ class CommentServiceTest {
     }
 
     private Long createPostDtoAndGetId(String title, String content) {
-        PostDto postDto = new PostDto(null, null, title, content);
+        PostDto postDto = new PostDto(null, null, title, content, 0);
         return postCategoryService.createPostWithCategory(postDto).id();
     }
 

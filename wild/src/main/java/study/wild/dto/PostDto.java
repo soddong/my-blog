@@ -7,11 +7,12 @@ public record PostDto(
         Long id,
         Long categoryId,
         String title,
-        String content
+        String content,
+        long view
 ) {
     public static PostDto from(Post post) {
         return new PostDto(post.getId(), post.getCategory().getId(),
-                post.getTitle(), post.getContent());
+                post.getTitle(), post.getContent(), post.getView());
     }
 
     public Post toEntity(Category category) {
@@ -20,6 +21,7 @@ public record PostDto(
                 .category(category)
                 .title(this.title)
                 .content(this.content)
+                .view(this.view)
                 .build();
     }
 }

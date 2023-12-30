@@ -153,6 +153,6 @@ public class PostServiceTest {
     }
 
     private PostDto createPostDto(String title, String content) {
-        return new PostDto(null, null, title, content);
+        return new PostDto(null, null, title, content, 0);
     }
 }

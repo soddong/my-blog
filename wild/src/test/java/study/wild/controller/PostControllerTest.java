@@ -23,7 +23,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,11 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @MockBean(JpaMetamodelMappingContext.class)
 class PostControllerTest {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     @MockBean
     private PostService postService;
 
@@ -49,8 +50,8 @@ class PostControllerTest {
     @DisplayName("게시글을 등록한다")
     void saveTest() throws Exception {
         // given
-        PostDto postDto = new PostDto(null, null, "제목", "내용");
-        PostDto returnedPostDto = new PostDto(1L, 1L, "제목", "내용");
+        PostDto postDto = new PostDto(null, null, "제목", "내용", 0);
+        PostDto returnedPostDto = new PostDto(1L, 1L, "제목", "내용", 0);
         given(postCategoryService.createPostWithCategory(any(PostDto.class))).willReturn(returnedPostDto);
 
         String postJson = objectMapper.writeValueAsString(postDto);
@@ -69,7 +70,7 @@ class PostControllerTest {
     void updatePostTest() throws Exception {
         // given
         long postId = 1L;
-        PostDto returnedPostDto = new PostDto(1L, 1L, "제목 수정", "내용 수정");
+        PostDto returnedPostDto = new PostDto(1L, 1L, "제목 수정", "내용 수정", 0);
         given(postService.editPost(eq(postId), any(PostDto.class))).willReturn(returnedPostDto);
 
         String postJson = objectMapper.writeValueAsString(returnedPostDto);
@@ -88,8 +89,8 @@ class PostControllerTest {
     void getAllPost() throws Exception {
         // given
         List<PostDto> posts = Arrays.asList(
-                new PostDto(1L, 1L, "제목 1", "내용 1"),
-                new PostDto(2L, 1L, "제목 2", "내용 3")
+                new PostDto(1L, 1L, "제목 1", "내용 1", 0),
+                new PostDto(2L, 1L, "제목 2", "내용 3", 0)
         );
         given(postService.viewPosts(false)).willReturn(posts);
 
@@ -109,8 +110,8 @@ class PostControllerTest {
         // given
         long categoryId = 1L;
         List<PostDto> posts = Arrays.asList(
-                new PostDto(1L, 1L, "제목 1", "내용 1"),
-                new PostDto(2L, 1L, "제목 2", "내용 3")
+                new PostDto(1L, 1L, "제목 1", "내용 1", 0),
+                new PostDto(2L, 1L, "제목 2", "내용 3", 0)
         );
         given(postService.getPostsByCategory(categoryId, false)).willReturn(posts);
 
@@ -129,7 +130,7 @@ class PostControllerTest {
     void getPostTest() throws Exception {
         // given
         long postId = 1L;
-        PostDto postDto = new PostDto(postId, 1L, "제목 1", "내용 1");
+        PostDto postDto = new PostDto(postId, 1L, "제목 1", "내용 1", 0);
         given(postService.viewPostDetail(eq(postId))).willReturn(postDto);
 
         // when & then
