@@ -22,7 +22,6 @@ public class PostService {
     /**
      * 게시글 등록
      */
-    @Transactional
     public PostDto createPost(PostDto postDto, CategoryDto categoryDto) {
         Post savedPost = postRepository.save(postDto.toEntity(categoryDto.toEntity()));
         return PostDto.from(savedPost);
