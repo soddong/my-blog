@@ -1,0 +1,195 @@
+body {
+    font-family: "ONE-Mobile-Title";
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color:#FAFAFA;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* 그림자 효과 */
+    background-color: #f3f3f3; /* 배경 색상 */
+}
+
+header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: #333; /* 메뉴 색상 */
+    font-weight: bold; /* 글꼴 굵기 */
+    padding: 5px 10px; /* 패딩 추가 */
+    border-radius: 5px; /* 둥근 모서리 */
+    transition: background-color 0.3s, color 0.3s; /* 부드러운 색상 전환 */
+}
+
+nav ul li a:hover {
+    background-color: #D8D8D8; /* 호버 시 배경색 변경 */
+    color: #000; /* 호버 시 글자 색상 변경 */
+}
+
+aside {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #fff; /* 배경 색상 */
+    box-shadow: 4px 0 8px 0 rgba(0,0,0,0.1); /* 그림자 효과 */
+    z-index: 100;
+    padding: 20px;
+}
+
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: row; /* Aligns children horizontally */
+}
+
+.main-content {
+    flex-grow: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile img {
+    border: 2px solid #f0f0f0;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.wrap-vertical-nature {
+    width: 770px;
+    padding: 10px;
+    overflow-x: scroll; /* 가로 스크롤을 지원하기 위해 overflow-x 속성 사용 */
+    color: #112031;
+    border: 1px solid #f0f0f0;
+    white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+    display: flex; /* 이미지를 가로로 배치하기 위해 변경 */
+}
+
+.wrap-vertical-nature img {
+    display: inline-block; /* 이미지를 인라인 블록으로 변경하여 가로로 배치 */
+    margin-right: 5px; /* 이미지 사이의 간격을 설정할 수 있습니다. */
+    width: 300px; /* 이미지의 너비를 조절합니다. */
+    height: 400px; /* 이미지의 높이를 조절합니다. */
+    border-radius: 3%;
+}
+
+.details {
+    flex: 1;
+}
+
+.details h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.details p {
+    font-size: 18px;
+    margin: 0;
+}
+
+.goal-content {
+    display: flex;
+    justify-content: space-around; /* Evenly spaces the flex items */
+}
+
+
+.goal-section {
+    /* Add any specific styling you want for each section */
+    text-align: center; /* Center the text inside each section */
+    padding: 10px; /* Add some padding for spacing */
+    flex: 1; /* This ensures each section takes equal width */
+    
+}
+
+.section-header-blue h2 {
+    color: #333; /* 글자 색상 */
+    padding-bottom: 5px; /* 아래쪽 패딩 */
+    margin-bottom: 15px; /* 아래쪽 여백 */
+    display: inline-block; /* 인라인 블록 */
+    padding: 5px; /* 약간의 패딩 추가 */
+    background-color: #E0ECF8; /* 주변을 감싸는 배경색 */
+    border-radius: 9px;
+
+}
+
+.section-header-pink h2 {
+    color: #333; /* 글자 색상 */
+    padding-bottom: 5px; /* 아래쪽 패딩 */
+    margin-bottom: 15px; /* 아래쪽 여백 */
+    display: inline-block; /* 인라인 블록 */
+    padding: 5px; /* 약간의 패딩 추가 */
+    background-color: #FBEFFB; /* 주변을 감싸는 배경색 */
+    border-radius: 9px;
+}
+
+.section-header-yellow h2 {
+    color: #333; /* 글자 색상 */
+    padding-bottom: 5px; /* 아래쪽 패딩 */
+    margin-bottom: 15px; /* 아래쪽 여백 */
+    display: inline-block; /* 인라인 블록 */
+    padding: 5px; /* 약간의 패딩 추가 */
+    background-color: #F5F6CE; /* 주변을 감싸는 배경색 */
+    border-radius: 9px;
+}
+
+.time-period {
+    font-weight: bold; /* 기간을 강조 */
+    margin-right: 10px; /* 내용과의 간격 */
+    color: #555; /* 기간 색상 */
+}
+
+.detail {
+    font-weight: normal; /* 기본 글씨 두께 */
+    color: #333; /* 상세 내용 색상 */
+}
+
+.goal-content, .footprint-content, .project-content{
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+@font-face {
+    font-family: 'ONE-Mobile-Title';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Title.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

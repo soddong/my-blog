@@ -1,0 +1,15 @@
+/* App.css 파일 */
+
+button {
+  margin: 10px;
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
