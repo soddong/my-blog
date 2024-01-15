@@ -21,7 +21,6 @@ public class CommentService {
     /**
      * 댓글 등록
      */
-    @Transactional
     public CommentDto saveComment(Comment comment) {
         return CommentDto.from(commentRepository.save(comment));
     }
@@ -68,7 +67,6 @@ public class CommentService {
     /**
      * 특정 게시글에 포함된 댓글들 삭제
      */
-    @Transactional
     public void deleteCommentByPostId(Long postId) {
         commentRepository.deleteByPostId(postId);
     }

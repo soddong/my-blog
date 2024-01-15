@@ -49,7 +49,7 @@ public class Post extends BaseTimeEntity {
         this.category = category;
         this.title = title;
         this.content = content;
-        this.view = view == null ? 0 : view;
+        this.view = view;
     }
 
     public void increaseView() {

@@ -1,0 +1,129 @@
+/* Category List Enhancements */
+#category-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#category-list li {
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#category-list li:hover {
+    background-color: #E8E8E8;
+    color: #000;
+}
+
+/* Active Category Styling */
+.active-category {
+    background-color: #D8D8D8;
+    color: #000;
+    font-weight: bold;
+}
+
+aside {
+    /* Existing styles... */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main {
+    display: flex;
+    justify-content: center; /* Aligns content to the center */
+    padding: 20px;
+}
+
+.category-box {
+    width: 90%; /* Adjust as needed */
+    background-color: #fff; /* Box background color */
+    padding: 20px;
+    margin-top: 100px; /* Space from top */
+    border-radius: 10px; /* Rounded corners */
+    text-align: center; /* Center-align the heading */
+}
+
+#category-list {
+    padding-top: 10px; /* Space between heading and list */
+    /* Rest of your styles... */
+}
+
+.post-details {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff; /* Background color for the box */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Shadow for depth */
+    border-radius: 8px; /* Rounded corners */
+    max-width: 800px; /* Adjust the width as per your layout */
+}
+  
+.post-details h3 {
+margin-top: 0;
+color: #333; /* Title color */
+font-size: 1.5em; /* Title size */
+}
+
+.post-details p {
+color: #666; /* Content color */
+line-height: 1.6; /* Improve readability */
+}
+
+.posts-container {
+    padding-top: 50px;
+    padding-left: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Adjust the space between posts */
+}
+
+.post-item {
+    background-color: #fff; /* Background color for the box */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    cursor: pointer; /* Change cursor on hover */
+    transition: transform 0.2s; /* Smooth transition for click effect */
+    height: 100px; /* Double the height */
+    width: 500px;
+    overflow: hidden;
+}
+
+.post-item:hover {
+    transform: scale(1.02); /* Slight increase in size on hover */
+}
+
+.post-item {
+    /* ... existing styles ... */
+    transition: all 0.3s ease; /* Smooth transition for expanding effect */
+}
+
+.expanded {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    z-index: 10;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.expanded-content {
+    max-width: 80%; /* Limit the width of the expanded content */
+    padding: 20px; /* Add padding for spacing */
+    text-align: left; /* Align text to the left */
+}
+
+.close-btn {
+    position: absolute;
+    top: 200px;
+    right: 200px;
+    cursor: pointer;
+}
