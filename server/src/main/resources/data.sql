@@ -1,2 +1,5 @@
 INSERT INTO category (category_id, name)
-VALUES (1, 'default');
+SELECT 1, 'default'
+    WHERE NOT EXISTS (
+    SELECT 1 FROM category WHERE category_id = 1
+);
