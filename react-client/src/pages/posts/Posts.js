@@ -54,6 +54,8 @@ const Posts = () => {
     setSelectedPostId(null); // Reset the selected post
     setIsExpanded(false); // Reset the expanded view
   };
+  
+  
 
   const selectedPost = posts.find(post => post.id === selectedPostId);
 
@@ -63,30 +65,45 @@ const Posts = () => {
         <div className="category-box">
           <h2>카테고리</h2>
           <ul id="category-list">
-            {categories.map(category => (
-              <li key={category.id} onClick={() => onSelectCategory(category.id)}>
-                {category.name}
-              </li>
-            ))}
+            {/* 전체보기 옵션 추가 */}
+            <li key="all" onClick={() => onSelectCategory(null)}>
+              전체보기
+            </li>
+            {categories
+              .filter(category => category.name !== "default")
+              .map(category => (
+                <li key={category.id} onClick={() => onSelectCategory(category.id)}>
+                  {category.name}
+                </li>
+              ))}
           </ul>
         </div>
       </aside>
 
+
       <main>
-        <div className="posts-container">
-          {posts.map(post => (
-            <div className={`post-item ${selectedPostId === post.id && isExpanded ? 'expanded' : ''}`} onClick={() => onSelectPost(post.id)}>
+      <div className="posts-container">
+        {posts.map(post => (
+          <div key={post.id} className={`post-item ${selectedPostId === post.id && isExpanded ? 'expanded' : ''}`} onClick={() => onSelectPost(post.id)}>
             <h3>{post.title}</h3>
             {selectedPostId === post.id && isExpanded && (
-                <div className="expanded-content">
-                    <button className="close-btn" onClick={closeExpandedView}>Close</button>
+              <div className="expanded-content">
+                <button className="close-btn" onClick={closeExpandedView}>Close</button>
+                {selectedPost ? (
+                  <>
                     <p>{selectedPost.content}</p>
                     {/* Add more expanded post details here */}
-                </div>
+                  </>
+                ) : (
+                  // selectedPost가 null이면 리스트를 출력
+                  <p>{post.content}</p>
+                )}
+              </div>
             )}
-            </div>
-          ))}
-        </div>
+          </div>
+        ))}
+</div>
+
       </main>
     </div>
   );
