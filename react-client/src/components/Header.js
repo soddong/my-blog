@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // react-router-dom을 사용한 라우팅
-import '../css/style.css'; // CSS 파일 경로를 적절하게 조정하세요.
+import { Link } from 'react-router-dom';
+import '../css/style.css';
 import profileImage from '../assets/profile.png';
 
 const Header = () => {
@@ -13,6 +13,10 @@ const Header = () => {
           <li><Link to="../pages/posts" id="post">Post</Link></li>
         </ul>
       </nav>
+      <div className="login-buttone-container">
+        {/* 로그인 창 또는 버튼을 추가하세요. */}
+        <Link to="../pages/login" className="login-button">로그인</Link>
+      </div>
     </header>
   );
 };
