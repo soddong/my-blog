@@ -25,17 +25,8 @@ public class PostService {
      * 게시글 등록
      */
     public PostDto createPost(PostDto postDto, CategoryDto categoryDto) {
-        log.info("Creating post with title: {}", postDto.title());
-        log.info("Category ID: {}", categoryDto.id());
-        log.info("Post view: {}", postDto.view());
-        try {
-            Post savedPost = postRepository.save(postDto.toEntity(categoryDto.toEntity()));
-            log.info("Post saved with ID: {}", savedPost.getId());
-            return PostDto.from(savedPost);
-        } catch (Exception e) {
-            log.error("Error creating post: {}", e.getMessage(), e);
-            throw e;
-        }
+        Post savedPost = postRepository.save(postDto.toEntity(categoryDto.toEntity()));
+        return PostDto.from(savedPost);
     }
 
     /**
