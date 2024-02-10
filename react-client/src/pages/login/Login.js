@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { loginService } from '../../service/loginService';
 import '../../css/style.css';
 
@@ -7,25 +7,27 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [responseStatus, setResponseStatus] = useState(null);
-  const [responseMessage, setResponseMessage] = useState('');
 
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     try {
       const response = await loginService.login(username, password);
-        setResponseStatus(response.status);
-        setResponseMessage(response.data);
+
+      if (response.status === 200) {
+        // 로그인 성공 시 페이지 이동
+        navigate(-1);
+      }
+
     } catch (error) {
       console.error('로그인 요청 중 오류 발생:', error);
-      setErrorMessage('로그인 중 오류가 발생했습니다.');
-    }
-  };
+      setErrorMessage('존재하지 않는 유저 정보입니다.');
 
-  const handleCloseErrorModal = () => {
-    setErrorMessage('');
+      // 새로운 창에 알림 띄우기
+      window.alert(errorMessage);
+    }
   };
 
   return (
@@ -56,13 +58,6 @@ const Login = () => {
           </button>
         </form>
       </div>
-
-      {errorMessage && (
-        <div className="error-modal">
-          <p>{errorMessage}</p>
-          <button onClick={handleCloseErrorModal}>닫기</button>
-        </div>
-      )}
     </div>
   );
 };
