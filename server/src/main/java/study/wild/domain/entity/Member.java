@@ -10,7 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+public class Member {
     @Id
     @GeneratedValue
     @Column(name = "user_id")
@@ -24,7 +24,7 @@ public class User {
     private String password;
 
     @Builder
-    public User(Long userId, String name, String password) {
+    public Member(Long userId, String name, String password) {
         this.userId = userId;
         this.name = name;
         this.password = password;
