@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginService } from '../../service/loginService';
+import { useLoginContext } from './LoginContext';
 import '../../css/style.css';
 
 const Login = () => {
@@ -9,23 +9,20 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
+  const { login } = useLoginContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await loginService.login(username, password);
-
-      if (response.status === 200) {
-        // 로그인 성공 시 페이지 이동
-        navigate(-1);
-      }
-
+      // 로그인 로직 처리
+      login();
+      
+      // 페이지 이동
+      navigate('/home');
     } catch (error) {
       console.error('로그인 요청 중 오류 발생:', error);
       setErrorMessage('존재하지 않는 유저 정보입니다.');
-
-      // 새로운 창에 알림 띄우기
       window.alert(errorMessage);
     }
   };
