@@ -5,9 +5,12 @@ import { postService } from '../../service/postService';
 import PostForm from '../../components/PostForm';
 import '../../css/post.css';
 import { useNavigate } from 'react-router-dom';
+import { useLoginContext } from '../login/LoginContext';
 
 const Posts = () => {
   const navigate = useNavigate();
+  const { loginSession } = useLoginContext();
+
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -93,9 +96,11 @@ const Posts = () => {
 
       <main>
         <div className="posts-container">
-          <div className='add-post-button'>
-            <button onClick={() => setIsExpanded(true)}>게시글 등록하기</button>
-          </div>
+          {loginSession && (
+            <div className='add-post-button'>
+              <button onClick={() => setIsExpanded(true)}>게시글 등록하기</button>
+            </div>
+          )}
 
           {posts.map((post) => (
             <div
@@ -112,7 +117,6 @@ const Posts = () => {
                   {selectedPost ? (
                     <>
                       <p>{selectedPost.content}</p>
-                      {/* Add more expanded post details here */}
                     </>
                   ) : (
                     <p>{post.content}</p>
@@ -121,7 +125,7 @@ const Posts = () => {
               )}
             </div>
           ))}
-          {isExpanded && <PostForm onAddPost={addPost} categories={categories} className='post-form' />}
+          {isExpanded && loginSession && <PostForm onAddPost={addPost} categories={categories} className='post-form' />}
 
         </div>
       </main>
