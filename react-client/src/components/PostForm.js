@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import '../css/post.css'; // post.css 파일 import
+import { postService } from '../service/postService';
 
-const PostForm = ({ onAddPost, categories }) => {
+const PostForm = ({ categories }) => {
   const [post, setPost] = useState({ id: null, categoryId: '', title: '', content: '' });
 
   const handleChange = (e) => {
     setPost({ ...post, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onAddPost(post);
+    const response = await postService.createPost(post);
     setPost({ id: null, title: '', content: '', categoryId: '' });
   };
 

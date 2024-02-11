@@ -1,8 +1,9 @@
-// Posts.js
 import React, { useEffect, useState } from 'react';
 import { categoryService } from '../../service/categoryService';
 import { postService } from '../../service/postService';
 import PostForm from '../../components/PostForm';
+import UpdateForm from '../../components/UpdateForm';
+import CategoryForm from '../../components/CategoryForm';
 import '../../css/post.css';
 import { useNavigate } from 'react-router-dom';
 import { useLoginContext } from '../login/LoginContext';
@@ -15,8 +16,12 @@ const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const [updatePostId, setUpdatePostId] = useState(null);
   const [isExpandedPost, setIsExpandedPost] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpandedCategoryForm, setIsExpandedCategoryForm] = useState(false);
+  const [isExpandedEditing, setIsExpandedEditing] = useState(false);
+  const [isExpandedCreate, setIsExpandedCreate] = useState(false);
+  const [postToEdit, setPostToEdit] = useState(null);
 
   useEffect(() => {
     loadCategories();
@@ -52,23 +57,54 @@ const Posts = () => {
     }
   };
 
-  const onSelectPost = (postId) => {
+  const onSelectPost = async (postId) => {
     setSelectedPostId(postId);
     setIsExpandedPost(true);
+    console.log('jio');
+  };
+
+  const onDeletePost = async (postId) => {
+    try {
+      await postService.deletePost(postId);
+      loadInitialPosts();
+      closeExpandedView();
+    } catch (error) {
+      console.error(`Error deleting post ${postId}:`, error);
+    }
+  };
+
+  const onUpdatePost = async (postId) => {
+    setSelectedPostId(postId);
+    setUpdatePostId(postId);
+    setIsExpandedEditing(true);
+    setIsExpandedPost(false);
+  };
+
+  const handleUpdatePost = async (postId) => {
+    try {
+      const response = await postService.getPost(postId);
+      setPostToEdit(response.data);
+      setIsExpandedEditing(true);
+      setIsExpandedPost(false);
+    } catch (error) {
+      console.error(`Error fetching post ${postId} for update:`, error);
+    }
   };
 
   const closeExpandedView = () => {
-    setSelectedPostId(null);
-    setIsExpandedPost(false);
-    navigate('/posts');
+    // setIsExpandedEditing(false);
+    // setIsExpandedCreate(false);
+    setIsExpandedPost(false);  // setIsExpandedPost를 먼저 false로 변경
+    // setSelectedPostId(null);
   };
-
-  const addPost = async (newPost) => {
+  
+  const addCategory = async (newCategory) => {
     try {
-      const response = await postService.addPost(newPost);
-      loadInitialPosts();
+      console.log('카테고리 추가:', newCategory);
+      loadCategories();
+      setIsExpandedCategoryForm(false);
     } catch (error) {
-      console.error('Error adding post:', error);
+      console.error('Error adding category:', error);
     }
   };
 
@@ -92,42 +128,67 @@ const Posts = () => {
               ))}
           </ul>
         </div>
+        {loginSession && (
+          <div className='add-category-button'>
+            <button onClick={() => setIsExpandedCategoryForm(true)}>카테고리 등록하기</button>
+          </div>
+        )}
+        {isExpandedCategoryForm && loginSession && (
+          <div className='add-save-button'>
+            <CategoryForm onAddCategory={addCategory} />
+          </div>
+        )}
       </aside>
 
       <main>
         <div className="posts-container">
           {loginSession && (
-            <div className='add-post-button'>
-              <button onClick={() => setIsExpanded(true)}>게시글 등록하기</button>
+            <div>
+              <div className='add-post-button'>
+                <button onClick={() => setIsExpandedCreate(true)}>게시글 등록하기</button>
+              </div>
             </div>
           )}
-
+          {isExpandedCreate && loginSession && <PostForm categories={categories} className='post-form' />}
           {posts.map((post) => (
             <div
-              key={post.id}
-              className={`post-item ${selectedPostId === post.id && isExpandedPost ? 'expanded' : ''}`}
-              onClick={() => onSelectPost(post.id)}
-            >
-              <h3>{post.title}</h3>
-              {selectedPostId === post.id && isExpandedPost && (
-                <div className="expanded-content">
-                  <button className="close-btn" onClick={closeExpandedView}>
-                    Close
-                  </button>
-                  {selectedPost ? (
-                    <>
-                      <p>{selectedPost.content}</p>
-                    </>
-                  ) : (
-                    <p>{post.content}</p>
+            key={post.id}
+            className={`post-item ${selectedPostId === post.id && isExpandedPost ? 'expanded' : ''}`}
+            onClick={(e) => { e.stopPropagation(); onSelectPost(post.id); }}>
+            <h3>{post.title}</h3>
+            {selectedPostId === post.id && isExpandedPost && (
+              <div className="expanded-content">
+                <button className="close-btn" onClick={(e) => { e.stopPropagation(); closeExpandedView(); }}>
+                  Close
+                </button>
+                  {loginSession && (
+                    <div>
+                      <button className="delete-btn" onClick={() => onDeletePost(post.id)}>
+                        삭제
+                      </button>
+                      <button className="update-btn" onClick={() => onUpdatePost(post.id)}>
+                        수정
+                      </button>
+                    </div>
                   )}
+                  {selectedPost && <p>{post.content}</p>}
                 </div>
               )}
             </div>
           ))}
-          {isExpanded && loginSession && <PostForm onAddPost={addPost} categories={categories} className='post-form' />}
-
         </div>
+      
+
+        {/* {isExpandedEditing && loginSession && (
+          <UpdateForm
+            onUpdatePost={handleUpdatePost}
+            categories={categories}
+            postToEdit={postToEdit}
+            isEditing={isExpandedEditing}
+            setIsExpandedCreate={setIsExpandedCreate} 
+            className='post-form'
+          />
+        )} */}
       </main>
     </div>
   );
