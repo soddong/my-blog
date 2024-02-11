@@ -5,7 +5,7 @@
   .add-post-button button {
     padding: 10px 15px; /* 버튼 내부 여백 설정 */
     font-size: 16px; /* 버튼 텍스트 크기 설정 */
-    background-color: #3498db; /* 버튼 배경색 설정 */
+    background-color: #666a6b; /* 버튼 배경색 설정 */
     color: #fff; /* 버튼 텍스트 색상 설정 */
     border: none; /* 테두리 없앰 */
     border-radius: 5px; /* 버튼 모서리 둥글게 설정 */
@@ -13,17 +13,52 @@
     transition: background-color 0.3s, color 0.3s; /* 배경색 및 텍스트 색상 전환 효과 설정 */
   }
   
-  .add-post-button button:hover {
-    background-color: #2980b9; /* 호버 상태에서의 배경색 설정 */
-    color: #fff; /* 호버 상태에서의 텍스트 색상 설정 */
-  }
+  /* .add-post-button button:hover {
+    background-color: #666a6b; 
+    color: #fff;
+  */
+
+.add-category-button {
+    margin-top: 10px; /* 버튼과 이전 요소 사이의 간격을 줄임 */
+}
+
+.add-category-button button {
+    padding: 8px 15px; /* 버튼 내부 여백을 조정 */
+    font-size: 14px; /* 버튼 텍스트 크기를 조정 */
+    background-color: #666a6b; /* 버튼 배경색을 설정 */
+    color: #fff; /* 버튼 텍스트 색상을 설정 */
+    border: none; /* 테두리 없앰 */
+    border-radius: 5px; /* 버튼 모서리 둥글게 설정 */
+    cursor: pointer; /* 커서 모양 설정 */
+    transition: background-color 0.3s, color 0.3s; /* 배경색 및 텍스트 색상 전환 효과 설정 */
+}
+
+.add-category-button button:hover {
+    background-color: #585353; 
+    color: #fff;
+}
+
+.add-save-button {
+    margin-top: 25px; /* 버튼과 이전 요소 사이의 간격을 조절 */
+}
+
+.add-save-button button {
+    padding: 5px 5px; /* 버튼 내부 여백 설정 */
+    font-size: 16px; /* 버튼 텍스트 크기 설정 */
+    background-color: transparent; /* 배경색 없음 */
+    color: #666a6b; /* 버튼 텍스트 색상 설정 */
+    border: 1px solid #666a6b; /* 테두리 설정 */
+    border-radius: 5px; /* 버튼 모서리 둥글게 설정 */
+    cursor: pointer; /* 커서 모양 설정 */
+    transition: background-color 0.3s, color 0.3s; /* 배경색 및 텍스트 색상 전환 효과 설정 */
+}
 
 .post-form {
     background-color: #fff; /* 배경색 지정 */
     padding: 20px; /* 패딩 조정 */
     border-radius: 10px; /* 모서리 둥글게 조정 */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
-    max-width: 400px; /* 최대 너비 지정 */
+    max-width: 500px; /* 최대 너비 지정 */
     margin: 20px auto; /* 중앙 정렬을 위한 마진 추가 */
 }
   
@@ -53,7 +88,7 @@
 }
   
 .post-form button:hover {
-    background-color: #ccc;
+    background-color: #585353;
 }
 
 #category-list {
@@ -136,6 +171,8 @@ line-height: 1.6; /* Improve readability */
     gap: 20px; /* Adjust the space between posts */
 }
 
+
+
 .post-item {
     background-color: #fff; /* Background color for the box */
     padding: 20px;
@@ -178,9 +215,66 @@ line-height: 1.6; /* Improve readability */
     text-align: left; /* Align text to the left */
 }
 
+.delete-btn {
+    position: absolute;
+    bottom: 200px; /* 상단 여백 조정 */
+    right: 300px; /* 우측 여백 조정 */
+    padding: 5px 10px; /* 버튼 내부 여백 설정 */
+    font-size: 14px; /* 버튼 텍스트 크기 설정 */
+    background-color: #fff; /* 배경색을 흰색으로 설정 */
+    color: #666a6b; /* 텍스트 색상 설정 */
+    border: 1px solid #666a6b; /* 테두리 설정 */
+    border-radius: 5px; /* 모서리 둥글게 설정 */
+    cursor: pointer; /* 커서 모양 설정 */
+    transition: background-color 0.3s, color 0.3s; /* 배경색 및 텍스트 색상 전환 효과 설정 */
+    
+}
+
+.delete-btn:hover {
+    background-color: #ccc; /* 호버 시 배경색 변경 */
+    color: #fff; /* 호버 시 텍스트 색상 변경 */
+}
+
+.update-btn {
+    position: absolute;
+    bottom: 200px; /* 상단 여백 조정 */
+    right: 350px; /* 우측 여백 조정 */
+    padding: 5px 10px; /* 버튼 내부 여백 설정 */
+    font-size: 14px; /* 버튼 텍스트 크기 설정 */
+    background-color: #fff; /* 배경색을 흰색으로 설정 */
+    color: #666a6b; /* 텍스트 색상 설정 */
+    border: 1px solid #666a6b; /* 테두리 설정 */
+    border-radius: 5px; /* 모서리 둥글게 설정 */
+    cursor: pointer; /* 커서 모양 설정 */
+    transition: background-color 0.3s, color 0.3s; /* 배경색 및 텍스트 색상 전환 효과 설정 */
+}
+
+.update-btn:hover {
+    background-color: #ccc; /* 호버 시 배경색 변경 */
+    color: #fff; /* 호버 시 텍스트 색상 변경 */
+}
+
 .close-btn {
     position: absolute;
-    top: 200px;
-    right: 200px;
+    top: 200px; /* 상단 여백 조정 */
+    right: 300px; /* 우측 여백 조정 */
     cursor: pointer;
+    padding: 10px 15px; /* 내부 여백 설정 */
+    font-size: 16px; /* 텍스트 크기 설정 */
+    background-color: #ccc; /* 배경색 설정 */
+    color: white; /* 텍스트 색상 설정 */
+    border: none; /* 테두리 없앰 */
+    border-radius: 5px; /* 모서리 둥글게 설정 */
+    transition: background-color 0.3s, color 0.3s; /* 배경색 및 텍스트 색상 전환 효과 설정 */
+}
+
+.close-btn:hover {
+    background-color: #585353; /* 호버 시 배경색 변경 */
+}
+
+@font-face {
+    font-family: 'ONE-Mobile-Title';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Title.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
