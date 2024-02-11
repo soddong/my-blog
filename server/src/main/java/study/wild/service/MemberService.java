@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import study.wild.common.exception.DuplicatedUserException;
 import study.wild.domain.entity.Member;
 import study.wild.domain.entity.Role;
 import study.wild.dto.MemberDto;
