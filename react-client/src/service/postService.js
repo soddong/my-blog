@@ -11,11 +11,14 @@ const getPosts = (categoryId = null) => {
 
 const getPost = postId => axios.get(`${API_URL}posts/${postId}`);
 
+const updatePost = (postId, post) => axios.put(`${API_URL}posts/${postId}`, post);
+
 const deletePost = postId => axios.delete(`${API_URL}posts/${postId}`);
 
 export const postService = {
   createPost,
   getPosts,
   getPost,
+  updatePost,
   deletePost
 };
