@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { categoryService } from '../service/categoryService'; 
 
 const CategoryForm = ({ onAddCategory, onUpdateCategory, categoryToEdit, isEditing }) => {
     const [category, setCategory] = useState({ id: null, name: '' });
@@ -15,15 +16,21 @@ const CategoryForm = ({ onAddCategory, onUpdateCategory, categoryToEdit, isEditi
         setCategory({ ...category, name: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isEditing) {
-            onUpdateCategory(category);
-        } else {
-            onAddCategory(category);
+        try {
+            if (isEditing) {
+                await categoryService.updateCategory(category.id, category);
+                onUpdateCategory(category);
+            } else {
+                const response = await categoryService.createCategory(category);
+                onAddCategory(response.data);
+            }
+            // 저장 후 초기화
+            setCategory({ id: null, name: '' });
+        } catch (error) {
+            console.error('Error adding/updating category:', error);
         }
-        // 저장 후 초기화
-        setCategory({ id: null, name: '' });
     };
 
     return (
