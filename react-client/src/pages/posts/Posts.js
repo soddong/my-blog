@@ -60,7 +60,6 @@ const Posts = () => {
   const onSelectPost = async (postId) => {
     setSelectedPostId(postId);
     setIsExpandedPost(true);
-    console.log('jio');
   };
 
   const onDeletePost = async (postId) => {
@@ -74,7 +73,6 @@ const Posts = () => {
   };
 
   const onUpdatePost = async (postId) => {
-    setSelectedPostId(postId);
     setUpdatePostId(postId);
     setIsExpandedEditing(true);
     setIsExpandedPost(false);
@@ -130,7 +128,7 @@ const Posts = () => {
         </div>
         {loginSession && (
           <div className='add-category-button'>
-            <button onClick={() => setIsExpandedCategoryForm(true)}>카테고리 등록하기</button>
+            <button onClick={() => setIsExpandedCategoryForm(!isExpandedCategoryForm)}>카테고리 등록하기</button>
           </div>
         )}
         {isExpandedCategoryForm && loginSession && (
@@ -145,11 +143,13 @@ const Posts = () => {
           {loginSession && (
             <div>
               <div className='add-post-button'>
-                <button onClick={() => setIsExpandedCreate(true)}>게시글 등록하기</button>
+                <button onClick={() => setIsExpandedCreate(!isExpandedCreate)}>게시글 등록하기</button>
               </div>
             </div>
           )}
           {isExpandedCreate && loginSession && <PostForm categories={categories} className='post-form' />}
+          {isExpandedEditing && loginSession 
+          && (<UpdateForm postId={selectedPostId} className='post-form'></UpdateForm>)}
           {posts.map((post) => (
             <div
             key={post.id}
@@ -166,7 +166,10 @@ const Posts = () => {
                       <button className="delete-btn" onClick={() => onDeletePost(post.id)}>
                         삭제
                       </button>
-                      <button className="update-btn" onClick={() => onUpdatePost(post.id)}>
+                      <button className="update-btn" onClick={(e) => {
+                        e.stopPropagation(); 
+                        onUpdatePost(post.id);
+                      }}>
                         수정
                       </button>
                     </div>
@@ -177,18 +180,6 @@ const Posts = () => {
             </div>
           ))}
         </div>
-      
-
-        {/* {isExpandedEditing && loginSession && (
-          <UpdateForm
-            onUpdatePost={handleUpdatePost}
-            categories={categories}
-            postToEdit={postToEdit}
-            isEditing={isExpandedEditing}
-            setIsExpandedCreate={setIsExpandedCreate} 
-            className='post-form'
-          />
-        )} */}
       </main>
     </div>
   );
