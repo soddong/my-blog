@@ -83,6 +83,7 @@ const Posts = () => {
 
   const handlePostSubmit = async () => {
     setIsExpandedCreate(false);
+    await loadInitialPosts();
   };
 
   const selectedPost = posts.find((post) => post.id === selectedPostId);
