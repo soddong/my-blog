@@ -186,6 +186,19 @@ main {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+button {
+    font-weight: bold;
+    color: #A4A4A4;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;  
+}
+
+button:hover {
+    background-color: #585858;
+}
 
 .login-button {
     font-weight: bold;
@@ -195,6 +208,7 @@ main {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-family: 'ONE-Mobile-Title';
 }
 
 .login-button:hover {

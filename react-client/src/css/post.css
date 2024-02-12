@@ -11,6 +11,7 @@
     border-radius: 5px; /* 버튼 모서리 둥글게 설정 */
     cursor: pointer; /* 커서 모양 설정 */
     transition: background-color 0.3s, color 0.3s; /* 배경색 및 텍스트 색상 전환 효과 설정 */
+    font-family: 'ONE-Mobile-Title';
   }
   
   /* .add-post-button button:hover {
@@ -31,6 +32,7 @@
     border-radius: 5px; /* 버튼 모서리 둥글게 설정 */
     cursor: pointer; /* 커서 모양 설정 */
     transition: background-color 0.3s, color 0.3s; /* 배경색 및 텍스트 색상 전환 효과 설정 */
+    font-family: 'ONE-Mobile-Title';
 }
 
 .add-category-button button:hover {
@@ -51,6 +53,7 @@
     border-radius: 5px; /* 버튼 모서리 둥글게 설정 */
     cursor: pointer; /* 커서 모양 설정 */
     transition: background-color 0.3s, color 0.3s; /* 배경색 및 텍스트 색상 전환 효과 설정 */
+    font-family: 'ONE-Mobile-Title';
 }
 
 .post-form {
@@ -60,6 +63,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
     max-width: 500px; /* 최대 너비 지정 */
     margin: 20px auto; /* 중앙 정렬을 위한 마진 추가 */
+    font-family: 'ONE-Mobile-Title';
 }
   
 .post-form label {
@@ -85,6 +89,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-family: 'ONE-Mobile-Title';
 }
   
 .post-form button:hover {
@@ -127,6 +132,7 @@ main {
     display: flex;
     justify-content: center; /* Aligns content to the center */
     padding: 20px;
+    font-family: 'ONE-Mobile-Title';
 }
 
 .category-box {
