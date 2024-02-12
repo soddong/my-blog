@@ -5,6 +5,7 @@ import PostForm from '../../components/PostForm';
 import UpdateForm from '../../components/UpdateForm';
 import CategoryForm from '../../components/CategoryForm';
 import '../../css/post.css';
+import '../../css/style.css'
 import { useLoginContext } from '../login/LoginContext';
 
 const Posts = () => {
@@ -17,6 +18,7 @@ const Posts = () => {
   const [isExpandedCategoryForm, setIsExpandedCategoryForm] = useState(false);
   const [isExpandedEditing, setIsExpandedEditing] = useState(false);
   const [isExpandedCreate, setIsExpandedCreate] = useState(false);
+  const [isExpandedAside, setIsExpandedAside] = useState(true);
 
   useEffect(() => {
     loadCategories();
@@ -86,11 +88,26 @@ const Posts = () => {
     await loadInitialPosts();
   };
 
+  const handleUpdateSubmit = async () => {
+    setIsExpandedEditing(false);
+    setIsExpandedPost(true);
+    await loadInitialPosts();
+  };
+
+  const handleToggleAside = () => {
+    setIsExpandedAside(!isExpandedAside);
+  };
+
+
   const selectedPost = posts.find((post) => post.id === selectedPostId);
 
   return (
     <div>
-      <aside>
+      <aside className={`sidebar ${isExpandedAside ? 'open' : 'closed'}`}>
+        {isExpandedAside &&
+        <button className="toggle-sidebar-close-btn" onClick={handleToggleAside}>
+          ✖️
+        </button>}
         <div className="category-box">
           <h2>카테고리</h2>
           <ul id="category-list">
@@ -117,7 +134,11 @@ const Posts = () => {
           </div>
         )}
       </aside>
-
+      <div>
+      <button className="toggle-sidebar-open-btn" onClick={handleToggleAside}>
+          {!isExpandedAside && ">"}
+        </button>
+      </div>
       <main>
         <div className="posts-container">
           {loginSession && (
@@ -129,7 +150,7 @@ const Posts = () => {
           )}
           {isExpandedCreate && loginSession && <PostForm categories={categories} onPostSubmit={handlePostSubmit} />}
           {isExpandedEditing && loginSession 
-          && (<UpdateForm postId={selectedPostId} className='post-form'></UpdateForm>)}
+          && (<UpdateForm postId={selectedPostId} onUpdateSubmit={handleUpdateSubmit}></UpdateForm>)}
           {posts.map((post) => (
             <div
             key={post.id}
@@ -154,7 +175,7 @@ const Posts = () => {
                       </button>
                     </div>
                   )}
-                  {selectedPost && <p>{post.content}</p>}
+                  {selectedPost && <p>{selectedPost.content}</p>}
                 </div>
               )}
             </div>
