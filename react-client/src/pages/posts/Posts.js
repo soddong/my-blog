@@ -81,6 +81,10 @@ const Posts = () => {
     }
   };
 
+  const handlePostSubmit = async () => {
+    setIsExpandedCreate(false);
+  };
+
   const selectedPost = posts.find((post) => post.id === selectedPostId);
 
   return (
@@ -122,7 +126,7 @@ const Posts = () => {
               </div>
             </div>
           )}
-          {isExpandedCreate && loginSession && <PostForm categories={categories} className='post-form' />}
+          {isExpandedCreate && loginSession && <PostForm categories={categories} onPostSubmit={handlePostSubmit} />}
           {isExpandedEditing && loginSession 
           && (<UpdateForm postId={selectedPostId} className='post-form'></UpdateForm>)}
           {posts.map((post) => (

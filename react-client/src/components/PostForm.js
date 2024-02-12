@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../css/post.css'; // post.css 파일 import
 import { postService } from '../service/postService';
 
-const PostForm = ({ categories }) => {
+const PostForm = ({ categories, onPostSubmit }) => {
   const [post, setPost] = useState({ id: null, categoryId: '', title: '', content: '' });
 
   const handleChange = (e) => {
@@ -12,6 +12,7 @@ const PostForm = ({ categories }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await postService.createPost(post);
+    await onPostSubmit(post);
     setPost({ id: null, title: '', content: '', categoryId: '' });
   };
 
