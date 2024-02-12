@@ -24,6 +24,6 @@ Java Spring을 학습하기 위하여 만든 개인프로젝트 입니다.
  * 로그인 기능  
  ![로그인](https://github.com/soddong/my-blog/assets/64201367/5eb8e09f-5ada-461b-91d0-ac0e99920b2b)
  * 작성자 모드 (게시글 CRUD)  
- ![crud기능](https://github.com/soddong/my-blog/assets/64201367/1266247a-d4d1-4861-9911-1b9619763f92)
+ ![crud기능](https://github.com/soddong/my-blog/assets/64201367/916b421d-326a-41a5-8a7d-864530e5f145)
  * 일반 모드  
  ![일반모드](https://github.com/soddong/my-blog/assets/64201367/c245ffca-782b-4757-bd24-161d6c1daca2)
