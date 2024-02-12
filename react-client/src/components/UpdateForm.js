@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/post.css';
 import { postService } from '../service/postService';
 
-const UpdateForm = ({ postId }) => {
+const UpdateForm = ({ postId, onUpdateSubmit }) => {
   const [updatedPost, setUpdatedPost] = useState({ id: postId, categoryId: '', title: '', content: '' });
 
   useEffect(() => {
@@ -23,9 +23,10 @@ const UpdateForm = ({ postId }) => {
     setUpdatedPost({ ...updatedPost, [e.target.name]: e.target.value });
   };
 
-  const handleUpdateSubmit = (e) => {
+  const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     postService.updatePost(updatedPost.id, updatedPost);
+    await onUpdateSubmit();
   };
 
   return (
