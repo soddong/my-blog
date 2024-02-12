@@ -20,7 +20,7 @@ Java Spring을 학습하기 위하여 만든 개인프로젝트 입니다.
   | --- | --- |
   | Framework | React.js |
     
-# 결과물
+# Result
  * 로그인 기능  
  ![로그인](https://github.com/soddong/my-blog/assets/64201367/5eb8e09f-5ada-461b-91d0-ac0e99920b2b)
  * 작성자 모드 (게시글 CRUD)  
