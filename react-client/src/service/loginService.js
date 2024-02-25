@@ -4,7 +4,9 @@ const API_URL = 'http://localhost:8080/';
 
 const login = async (name, password) => {
   try {
-    const response = await axios.post(`${API_URL}api/auth/login`, { name, password });
+    const response = await axios.post(
+      `${API_URL}api/auth/login`, { name, password },
+      { withCredentials: true });
     console.log(response.status); 
     return response; 
   } catch (error) {
