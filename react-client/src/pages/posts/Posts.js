@@ -5,23 +5,20 @@ import PostForm from '../../components/PostForm';
 import UpdateForm from '../../components/UpdateForm';
 import CategoryForm from '../../components/CategoryForm';
 import '../../css/post.css';
-import { useNavigate } from 'react-router-dom';
+import '../../css/style.css'
 import { useLoginContext } from '../login/LoginContext';
 
 const Posts = () => {
-  const navigate = useNavigate();
   const { loginSession } = useLoginContext();
 
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedPostId, setSelectedPostId] = useState(null);
-  const [updatePostId, setUpdatePostId] = useState(null);
   const [isExpandedPost, setIsExpandedPost] = useState(false);
   const [isExpandedCategoryForm, setIsExpandedCategoryForm] = useState(false);
   const [isExpandedEditing, setIsExpandedEditing] = useState(false);
   const [isExpandedCreate, setIsExpandedCreate] = useState(false);
-  const [postToEdit, setPostToEdit] = useState(null);
+  const [isExpandedAside, setIsExpandedAside] = useState(true);
 
   useEffect(() => {
     loadCategories();
@@ -48,10 +45,9 @@ const Posts = () => {
 
   const onSelectCategory = async (categoryId) => {
     try {
-      setSelectedCategory(categoryId);
       const response = await postService.getPosts(categoryId);
       setPosts(response.data);
-      closeExpandedView();
+      setIsExpandedPost(false); 
     } catch (error) {
       console.error(`Error fetching posts for category ${categoryId}:`, error);
     }
@@ -66,34 +62,15 @@ const Posts = () => {
     try {
       await postService.deletePost(postId);
       loadInitialPosts();
-      closeExpandedView();
+      setIsExpandedPost(false); 
     } catch (error) {
       console.error(`Error deleting post ${postId}:`, error);
     }
   };
 
   const onUpdatePost = async (postId) => {
-    setUpdatePostId(postId);
     setIsExpandedEditing(true);
     setIsExpandedPost(false);
-  };
-
-  const handleUpdatePost = async (postId) => {
-    try {
-      const response = await postService.getPost(postId);
-      setPostToEdit(response.data);
-      setIsExpandedEditing(true);
-      setIsExpandedPost(false);
-    } catch (error) {
-      console.error(`Error fetching post ${postId} for update:`, error);
-    }
-  };
-
-  const closeExpandedView = () => {
-    // setIsExpandedEditing(false);
-    // setIsExpandedCreate(false);
-    setIsExpandedPost(false);  // setIsExpandedPost를 먼저 false로 변경
-    // setSelectedPostId(null);
   };
   
   const addCategory = async (newCategory) => {
@@ -106,11 +83,31 @@ const Posts = () => {
     }
   };
 
+  const handlePostSubmit = async () => {
+    setIsExpandedCreate(false);
+    await loadInitialPosts();
+  };
+
+  const handleUpdateSubmit = async () => {
+    setIsExpandedEditing(false);
+    setIsExpandedPost(true);
+    await loadInitialPosts();
+  };
+
+  const handleToggleAside = () => {
+    setIsExpandedAside(!isExpandedAside);
+  };
+
+
   const selectedPost = posts.find((post) => post.id === selectedPostId);
 
   return (
     <div>
-      <aside>
+      <aside className={`sidebar ${isExpandedAside ? 'open' : 'closed'}`}>
+        {isExpandedAside &&
+        <button className="toggle-sidebar-close-btn" onClick={handleToggleAside}>
+          ✖️
+        </button>}
         <div className="category-box">
           <h2>카테고리</h2>
           <ul id="category-list">
@@ -137,7 +134,11 @@ const Posts = () => {
           </div>
         )}
       </aside>
-
+      <div>
+      <button className="toggle-sidebar-open-btn" onClick={handleToggleAside}>
+          {!isExpandedAside && ">"}
+        </button>
+      </div>
       <main>
         <div className="posts-container">
           {loginSession && (
@@ -147,9 +148,9 @@ const Posts = () => {
               </div>
             </div>
           )}
-          {isExpandedCreate && loginSession && <PostForm categories={categories} className='post-form' />}
+          {isExpandedCreate && loginSession && <PostForm categories={categories} onPostSubmit={handlePostSubmit} />}
           {isExpandedEditing && loginSession 
-          && (<UpdateForm postId={selectedPostId} className='post-form'></UpdateForm>)}
+          && (<UpdateForm postId={selectedPostId} onUpdateSubmit={handleUpdateSubmit}></UpdateForm>)}
           {posts.map((post) => (
             <div
             key={post.id}
@@ -158,7 +159,7 @@ const Posts = () => {
             <h3>{post.title}</h3>
             {selectedPostId === post.id && isExpandedPost && (
               <div className="expanded-content">
-                <button className="close-btn" onClick={(e) => { e.stopPropagation(); closeExpandedView(); }}>
+                <button className="close-btn" onClick={(e) => { e.stopPropagation(); setIsExpandedPost(false); }}>
                   Close
                 </button>
                   {loginSession && (
@@ -174,7 +175,7 @@ const Posts = () => {
                       </button>
                     </div>
                   )}
-                  {selectedPost && <p>{post.content}</p>}
+                  {selectedPost && <p>{selectedPost.content}</p>}
                 </div>
               )}
             </div>

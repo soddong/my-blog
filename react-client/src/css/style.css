@@ -46,18 +46,27 @@ nav ul li a:hover {
     color: #000; /* 호버 시 글자 색상 변경 */
 }
 
-aside {
+.sidebar {
     position: fixed;
     left: 0;
     top: 0;
-    width: 300px;
     height: 100%;
     background-color: #fff; /* 배경 색상 */
     box-shadow: 4px 0 8px 0 rgba(0,0,0,0.1); /* 그림자 효과 */
     z-index: 100;
-    padding: 20px;
+    padding-top: 20px;
 }
 
+.sidebar.open {
+    width: 300px; 
+    transition: width 0.5s ease;
+}
+  
+.sidebar.closed {
+    width: 0 ;
+    overflow: hidden;
+    transition: width 0.5s ease;
+}
 
 main {
     flex-grow: 1;
@@ -263,7 +272,50 @@ button:hover {
     border-radius: 3px;
     
 }
+
+.close-aside-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #000; /* 버튼 색상은 원하는 색상으로 조절 가능 */
+  }
+
+  .toggle-sidebar-open-btn {
+    position: absolute;
+    top: 100px;
+    font-weight: bold;
+    color: #A4A4A4;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;  
+  }
   
+  .toggle-sidebar-open-btn:hover {
+    background-color: #555; /* 호버 시 배경색 변경 */
+  }
+
+  .toggle-sidebar-close-btn {
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    font-weight: bold;
+    color: #A4A4A4;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;  
+  }
+  
+  .toggle-sidebar-close-btn:hover {
+    background-color: #555; /* 호버 시 배경색 변경 */
+  }
 
 @font-face {
     font-family: 'ONE-Mobile-Title';

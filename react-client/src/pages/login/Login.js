@@ -19,7 +19,7 @@ const Login = () => {
       const response = await loginService.login(username, password);
       if (response.status === 200) {
         login();
-        navigate('/home');
+        navigate('/posts');
       }
     } catch (error) {
       console.error('로그인 요청 중 오류 발생:', error);

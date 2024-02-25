@@ -136,17 +136,12 @@ main {
 }
 
 .category-box {
-    width: 90%; /* Adjust as needed */
+    width: 80%; /* Adjust as needed */
     background-color: #fff; /* Box background color */
     padding: 20px;
     margin-top: 100px; /* Space from top */
     border-radius: 10px; /* Rounded corners */
     text-align: center; /* Center-align the heading */
-}
-
-#category-list {
-    padding-top: 10px; /* Space between heading and list */
-    /* Rest of your styles... */
 }
 
 .post-details {
