@@ -24,7 +24,19 @@ const fetchSession = async () => {
   }
 };
 
+const logout = async () => {
+  try {
+    const response = await axios.post(`${API_URL}api/auth/logout`, null, { withCredentials: true });
+    console.log(response.status); // 로그아웃 요청 성공적으로 완료된 경우
+    return response;
+  } catch (error) {
+    console.error('로그아웃 요청 중 오류 발생:', error); // 로그아웃 요청 중 오류 발생한 경우
+    throw error;
+  }
+};
+
 export const loginService = {
   login,
+  logout,
   fetchSession
 };
