@@ -1,9 +1,9 @@
 spring:
   h2:
     console:
-      enabled: true
+      enabled: false
   datasource:
-    url: jdbc:h2:tcp://localhost/~/wildBoard
+    url: jdbc:h2:file:/home/ec2-user/wildBoard;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
     username: sa
     password: 1226
     driver-class-name: org.h2.Driver
@@ -18,9 +18,10 @@ spring:
   sql:
     init:
       mode: always
-logging.level:
-  org.hibernate.SQL: debug
-
+logging:
+  level:
+    org.hibernate.SQL: debug
+    
 server:
   servlet:
     session:
